@@ -18,17 +18,21 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
 
-  useEffect(() => {
+  const getuser = () => {
     fetch("http://localhost:8080/users/1")
-      .then(response => response.json())
-      .then(user => setCurrentUser(user))
+    .then(response => response.json())
+    .then(user => setCurrentUser(user))
+  }
+
+  useEffect(() => {
+    getuser();
   }, [])
 
   return (
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<LoginPage />} />
+          <Route exact path="/" element={<LoginPage/>} />
           <Route path="candidate" element={<CandidatePage user={currentUser} />} >
             <Route path="joblistings" element={<JobList />}></Route>
             <Route path="applications" element={<ApplicationList />} ></Route>
