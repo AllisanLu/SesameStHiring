@@ -1,25 +1,27 @@
+import { Link } from "react-router-dom"
+
 import "./Navigation.css"
 
-function Navigation() {
+function CandidateNavigation() {
   return (
     <div className="Navigation">
       <nav>
         <img src={`https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Sesame_Street_logo.svg/2560px-Sesame_Street_logo.svg.png`} className="logo" />
         <div>
-          <a href="home">Home</a>
+          <Link to="">Home</Link>
           <div className="dropdown">
             <button className="dropbtn">Jobs
             </button>
             <div className="dropdown-content">
-              <a href="#">View Jobs</a>
-              <a href="#">View Applications</a>
+              <Link to="joblistings">View Jobs</Link>
+              <Link to="applications">View Applications</Link>
             </div>
           </div>
-          <a href="/">Logout</a>
+          <Link to="/">Logout</Link>
         </div>
       </nav>
     </div>
   )
 }
 
-export default Navigation
+export default CandidateNavigation

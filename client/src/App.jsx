@@ -1,15 +1,14 @@
 import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
 import ErrorPage from './pages/ErrorPage';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+import JobList from './components/JobList';
+import CandidatePage from './pages/CandidatePage';
+import ApplicationList from './components/candidate/ApplicationList';
 
 
 function App() {
@@ -17,30 +16,28 @@ function App() {
   const testuser = {
     username: "AllisanLu",
     password: "wahoo",
+    type: "candidate",
     email: "wahoo@example.com"
   }
-
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <LoginPage />,
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "home",
-      element: <HomePage user={testuser}></HomePage>,
-    },
-    {
-      path: "register",
-      element: <RegisterPage />
-    }
-  ]);
   
-
   return (
     <>
-      <RouterProvider router={router} />
-      
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<LoginPage />} />
+          <Route path="user" element={<CandidatePage user={testuser} />} >
+            <Route path="joblistings" element={<JobList />}></Route>
+            <Route path="applications" element={<ApplicationList />} ></Route>
+          </Route>
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="admin" element={<h1>Admin</h1>} />
+          <Route path="manager" element={<h1>Manager</h1>} />
+          <Route
+                    path="*"
+                    element={<ErrorPage />}
+                />
+        </Routes>
+      </Router>
     </>
   )
 }
