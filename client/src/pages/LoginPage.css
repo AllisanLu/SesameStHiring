@@ -1,0 +1,37 @@
+.LoginPage{
+    display: flex;             /* Enable flexbox */
+    justify-content: center;   /* Center horizontally */
+    align-items: center;       /* Center vertically */
+    height: 100vh;             /* Full viewport height */
+
+    background-image: url(https://i.pinimg.com/originals/92/fc/fe/92fcfe8fb9fd38abd284791156571a51.jpg);
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center center;   
+    
+    /* Optional: Styling the centered element */
+    & .centered-element {
+        background-color: #00AF42;
+        padding: 50px;
+        border: 5px solid #FCD000;
+        text-align: center;
+        box-shadow: 10px 5px 5px rgba(92, 92, 92, 0.637);;
+
+        & form {
+            padding: 15px;
+            text-align: left;
+
+            & button {
+                margin: 5px;
+            }
+        }
+    }
+
+    & a {
+        color: white;
+    }
+
+    & a:hover {
+        color:#0d7955
+    }
+}
