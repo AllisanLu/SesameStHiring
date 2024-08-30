@@ -6,7 +6,7 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8080/users/", {
+        fetch("http://localhost:8080/api/users", {
             headers: { "Content-Type": "application/json" },
             method: "POST",
             body: JSON.stringify(newUser)

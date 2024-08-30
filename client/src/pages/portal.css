@@ -4,4 +4,11 @@
         height: auto;
         margin:auto
     }
+
+    & form {
+        width: 20%;
+        margin: auto;
+        background-color: #11976a;
+        padding: 10px;
+    }
 }

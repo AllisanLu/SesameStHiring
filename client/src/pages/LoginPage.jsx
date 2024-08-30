@@ -4,7 +4,6 @@ import "./LoginPage.css"
 
 function LoginPage() {
 
-
     return (
         <div className="LoginPage">
             <div className="centered-element ">

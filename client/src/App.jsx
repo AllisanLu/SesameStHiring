@@ -19,7 +19,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
 
   const getuser = () => {
-    fetch("http://localhost:8080/users/1")
+    fetch("http://localhost:8080/api/users/5")
     .then(response => response.json())
     .then(user => setCurrentUser(user))
   }
@@ -33,16 +33,20 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginPage/>} />
+          <Route path="register" element={<RegisterPage />} />
+
           <Route path="candidate" element={<CandidatePage user={currentUser} />} >
             <Route path="joblistings" element={<JobList />}></Route>
             <Route path="applications" element={<ApplicationList />} ></Route>
           </Route>
-          <Route path="register" element={<RegisterPage />} />
+
           <Route path="admin" element={<h1>Admin</h1>} />
+          
           <Route path="manager" element={<ManagerPage user={currentUser} />} >
             <Route path="joblistings" element={<JobList />}></Route>
             <Route path="candidates" element={<CandidateList />} ></Route>
           </Route>
+
           <Route
             path="*"
             element={<ErrorPage />}
