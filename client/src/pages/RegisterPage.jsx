@@ -6,7 +6,14 @@ const RegisterPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // api call
+        fetch("http://localhost:8080/users/", {
+            headers: { "Content-Type": "application/json" },
+            type: "POST",
+            body: JSON.stringify(newUser)
+        })
+            .then(response => response.json())
+            .then(console.log("Added user"))
+
         setNewUser({ username: "", email: "", password: "" });
     }
 
@@ -26,59 +33,59 @@ const RegisterPage = () => {
         })
     }
 
-return (
-    <div className="RegisterPage">
-        <form onSubmit={handleSubmit} onReset={handleCancel}>
-            <h3>Create new user</h3>
-            <div className="mb-3 form-group">
-                <label htmlFor="username">Username</label>
-                <input
-                    id="username"
-                    name="username"
-                    placeholder="Enter username"
-                    value={newUser?.name}
-                    className="form-control"
-                    onChange={handleOnChange}
-                    required
-                />
-            </div>
-            <div className="mb-3 form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={newUser?.email}
-                    placeholder="Enter email"
-                    className="form-control"
-                    onChange={handleOnChange}
-                    required
-                />
-            </div>
-            <div className="mb-3 form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={newUser?.password}
-                    placeholder="Password"
-                    className="form-control"
-                    onChange={handleOnChange}
-                    required
-                />
-            </div>
-            <div className="button-group">
-                <button className="btn btn-success" type="submit">
-                    Create
-                </button>
-                <button className="btn btn-secondary"type="reset">
-                    Cancel
-                </button>
-            </div>
-        </form>
-    </div>
-);
+    return (
+        <div className="RegisterPage">
+            <form onSubmit={handleSubmit} onReset={handleCancel}>
+                <h3>Create new user</h3>
+                <div className="mb-3 form-group">
+                    <label htmlFor="username">Username</label>
+                    <input
+                        id="username"
+                        name="username"
+                        placeholder="Enter username"
+                        value={newUser?.name}
+                        className="form-control"
+                        onChange={handleOnChange}
+                        required
+                    />
+                </div>
+                <div className="mb-3 form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={newUser?.email}
+                        placeholder="Enter email"
+                        className="form-control"
+                        onChange={handleOnChange}
+                        required
+                    />
+                </div>
+                <div className="mb-3 form-group">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        value={newUser?.password}
+                        placeholder="Password"
+                        className="form-control"
+                        onChange={handleOnChange}
+                        required
+                    />
+                </div>
+                <div className="button-group">
+                    <button className="btn btn-success" type="submit">
+                        Create
+                    </button>
+                    <button className="btn btn-secondary" type="reset">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
 };
 
 export default RegisterPage;

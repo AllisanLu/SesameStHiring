@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import CandidateNavigation from "../components/candidate/CandidateNavigation";
 
-import "./Candidate.css"
+import "./portal.css"
 
 function CandidatePage({ user }) {
     return (

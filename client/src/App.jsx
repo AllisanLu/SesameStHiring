@@ -1,41 +1,48 @@
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ErrorPage from './pages/ErrorPage';
+import ManagerPage from './pages/ManagerPage';
+import CandidatePage from './pages/CandidatePage';
 
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from 'react';
 
 import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import JobList from './components/JobList';
-import CandidatePage from './pages/CandidatePage';
 import ApplicationList from './components/candidate/ApplicationList';
+import CandidateList from './components/manager/CandidateList';
 
 
 function App() {
 
-  const testuser = {
-    username: "AllisanLu",
-    password: "wahoo",
-    type: "candidate",
-    email: "wahoo@example.com"
-  }
-  
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    fetch("http://localhost:8080/users/1")
+      .then(response => response.json())
+      .then(user => setCurrentUser(user))
+  }, [])
+
   return (
     <>
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginPage />} />
-          <Route path="user" element={<CandidatePage user={testuser} />} >
+          <Route path="candidate" element={<CandidatePage user={currentUser} />} >
             <Route path="joblistings" element={<JobList />}></Route>
             <Route path="applications" element={<ApplicationList />} ></Route>
           </Route>
           <Route path="register" element={<RegisterPage />} />
           <Route path="admin" element={<h1>Admin</h1>} />
-          <Route path="manager" element={<h1>Manager</h1>} />
+          <Route path="manager" element={<ManagerPage user={currentUser} />} >
+            <Route path="joblistings" element={<JobList />}></Route>
+            <Route path="candidates" element={<CandidateList />} ></Route>
+          </Route>
           <Route
-                    path="*"
-                    element={<ErrorPage />}
-                />
+            path="*"
+            element={<ErrorPage />}
+          />
         </Routes>
       </Router>
     </>

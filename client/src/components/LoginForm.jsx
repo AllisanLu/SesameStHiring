@@ -15,7 +15,7 @@ function LoginForm() {
           <input id="password" name="password" type="password" value={userInfo.name} placeholder='password' className="form-control"></input>
         </div>
         {/* <button type="submit" className="btn btn-secondary">Login</button> */}
-        <a href="user" className="btn btn-secondary">Login</a>
+        <a href="candidate" className="btn btn-secondary">Login</a>
       </form>
     </>
   )
