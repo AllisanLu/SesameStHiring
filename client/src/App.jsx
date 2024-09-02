@@ -18,6 +18,62 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
 
+  const testManager = {
+    id: 1,
+    username: "Joe",
+    password: "pass"
+  }
+
+  const testJobs = [
+    {
+      title: "CS",
+      description: "writing code",
+      manager: 5,
+      id: 1
+    },
+    {
+      title: "HR",
+      description: "hiring people",
+      manager: 1,
+      id: 2
+    }
+  ];
+  const testApps = [
+    {
+      id: 1,
+      job: {
+        title: "CS",
+        description: "writing code",
+        manager: 4,
+        id: 1
+      },
+      candidate: "Allison"
+    },
+    {
+      id: 2,
+      job: {
+        title: "HR",
+        description: "hiring people",
+        manager: 1,
+        id: 1
+      },
+      candidate: "Jered"
+    }
+  ];
+
+  const testCandidates= [
+    {
+      name: "Allison",
+      id: 5,
+      job: {
+        title: "CS",
+        description: "writing code",
+        manager: 5,
+        id: 1
+      }
+    }
+  ]
+
   const getuser = () => {
     fetch("http://localhost:8080/api/users/5")
     .then(response => response.json())
@@ -36,15 +92,15 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
 
           <Route path="candidate" element={<CandidatePage user={currentUser} />} >
-            <Route path="joblistings" element={<JobList />}></Route>
-            <Route path="applications" element={<ApplicationList />} ></Route>
+            <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
+            <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
           </Route>
 
           <Route path="admin" element={<h1>Admin</h1>} />
           
-          <Route path="manager" element={<ManagerPage user={currentUser} />} >
-            <Route path="joblistings" element={<JobList />}></Route>
-            <Route path="candidates" element={<CandidateList />} ></Route>
+          <Route path="manager" element={<ManagerPage user={testManager} />} >
+            <Route path="joblistings" element={<JobList user={testManager} jobs={testJobs} />}></Route>
+            <Route path="candidates" element={<CandidateList candidates={testCandidates}/>} ></Route>
           </Route>
 
           <Route

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import "./portal.css"
-import ManagerNavigation from "../components/manager/CandidateNavigation";
+import ManagerNavigation from "../components/manager/ManagerNavigation";
 
 function ManagerPage({ user }) {
     return (

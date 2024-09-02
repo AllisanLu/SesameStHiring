@@ -24,7 +24,7 @@ function CandidatePage({ user }) {
       <CandidateNavigation></CandidateNavigation>
       <h1>Welcome {user?.username}!</h1>
       <h2>Password: {user?.password}</h2>
-      {user.type ? (<Outlet />) : (
+      {/* {user.type ? (<Outlet />) : (
         <form onSubmit={handleSubmit} >
         <h3>Create your candidate profile</h3>
         <div className="mb-3 form-group">
@@ -59,7 +59,8 @@ function CandidatePage({ user }) {
             </button>
         </div>
     </form>
-      )}
+      )} */}
+      <Outlet />
       <img id="welcomeImg" src="https://wallpapers.com/images/hd/cute-cartoon-sesame-street-characters-1841n41pmobi9iqy.jpg" alt="characters" />
     </div>
   )
