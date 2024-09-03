@@ -1,21 +1,20 @@
 import { useState } from "react"
-import Candidate from "./Candidate";
-import EditCandidate from "../admin/editCandidate";
+import Manager from "./Manager";
 
-function CandidateList({ user, candidates, loadCandidates }) {
-  const [selectedCandidate, setSelectedCandidate] = useState();
+function ManagerList({ user, managers, loadManagers }) {
+  const [selectedManager, setSelectedManager] = useState();
 
-  const handleView = (candidate) => {
-    if (candidate.id === selectedCandidate?.id) {
-      setSelectedCandidate();
+  const handleView = (manager) => {
+    if (manager.id === selectedManager?.id) {
+      setSelectedManager();
     } else {
-      setSelectedCandidate(candidate);
+      setSelectedManager(manager);
     }
   }
 
   return (
     <>
-      <h3>Candidates</h3>
+      <h3>Managers</h3>
       <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
@@ -28,14 +27,14 @@ function CandidateList({ user, candidates, loadCandidates }) {
             </tr>
           </thead>
           <tbody className="table-horizontal">
-            {candidates?.map((candidate) => {
+            {managers?.map((manager) => {
               return (
-                <tr key={candidate.id} onClick={() => handleView(candidate)}>
-                  <td>{candidate?.fullName}</td>
-                  <td>{candidate?.email}</td>
-                  <td>{candidate?.phone}</td>
-                  <td>{candidate?.address}</td>
-                  <td>{candidate?.resume}</td>
+                <tr key={manager.id} onClick={() => handleView(manager)}>
+                  <td>{manager?.fullName}</td>
+                  <td>{manager?.email}</td>
+                  <td>{manager?.phone}</td>
+                  <td>{manager?.address}</td>
+                  <td>{manager?.resume}</td>
                 </tr>
               )
             }

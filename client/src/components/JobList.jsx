@@ -53,7 +53,7 @@ function JobList({ user, jobs }) {
                   <td>{job.title}</td>
                   <td>{job.description}</td>
                   <td>{job.manager}</td>
-                  <td>{user?.type === "manager" ?
+                  <td>{user?.type === "manager" || user?.type === "admin" ?
                     <button className="btn btn-danger" onClick={(job) => handleDelete(job)}>Delete</button>
                     : <button className="btn btn-success" onClick={(e) => handleApply(e)}>Apply</button>}</td>
                 </tr>

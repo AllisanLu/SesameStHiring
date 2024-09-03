@@ -13,13 +13,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import JobList from './components/JobList';
 import ApplicationList from './components/candidate/ApplicationList';
 import CandidateList from './components/manager/CandidateList';
+import UserList from './components/admin/UserList.jsx';
 
-import { getUser } from './database.js'
+import { getUser, getUsers, getCandidates, getManagers } from './database.js'
 
 
 function App() {
 
   const [currentUser, setCurrentUser] = useState({});
+  const [candidates, setCandidates] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [managers, setManagers] = useState([]);
 
   const testManager = {
     id: 1,
@@ -72,44 +76,59 @@ function App() {
     }
   ];
 
-  const testCandidates= [
-    {
-      name: "Allison",
-      id: 5,
-      username: "allisan",
-      password: "pass",
-      email: "email@e.com",
-      phone: "770-777-1234",
-      address: "123 street",
-      resume: "Wahoo experience....dkfjadlkfjklsjdfkajdfkjadlkfjalsdjflkajdlkfjalksdjflkajdlskfjalkdjdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddf"
-    }
-  ]
+  const loadPage = async function () {
+    await loadUser();
 
-  const getuser = () => {
-    getUser(5).then(user => setCurrentUser(user))
+    // if (currentUser?.type === "manager") {
+    await loadCandidates()
+    // }
+    await loadUsers();
+    await loadManagers();
+  }
+
+  const loadUser = () => {
+    getUser(1).then(user => setCurrentUser(user))
+  }
+
+  const loadUsers = () => {
+    getUsers()
+      .then(users => setUsers(users))
+  }
+
+  const loadCandidates = () => {
+    getCandidates().then(res => setCandidates(res));
+  }
+
+  const loadManagers =  () => {
+     getManagers().then(res => setManagers(res));
   }
 
   useEffect(() => {
-    getuser();
+    loadPage();
   }, [])
 
   return (
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<LoginPage/>} />
+          <Route exact path="/" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
 
-          <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser}/>} >
+          <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
             <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
           </Route>
 
-          <Route path="admin" element={<AdminPage user={testAdmin} />} />
-          
+          <Route path="admin" element={<AdminPage user={testAdmin} />} >
+            <Route path="users" element={<UserList users={users} setUsers={setUsers} />} />
+            <Route path="candidates" element={<CandidateList user={testAdmin} candidates={candidates} loadCandidates={loadCandidates} />} />
+            <Route path="joblistings" element={<JobList user={testAdmin} jobs={testJobs} />} />
+            <Route path="managers" element={<ManagerList user={testAdmin} managers={managers} />} />
+          </Route>
+
           <Route path="manager" element={<ManagerPage user={testManager} />} >
             <Route path="joblistings" element={<JobList user={testManager} jobs={testJobs} />}></Route>
-            <Route path="candidates" element={<CandidateList candidates={testCandidates}/>} ></Route>
+            <Route path="candidates" element={<CandidateList user={testManager} candidates={candidates} loadCandidates={loadCandidates} />} ></Route>
           </Route>
 
           <Route

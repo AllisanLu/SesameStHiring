@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { createCandidate } from "../../database";
+import { createCandidate, updateUser } from "../../database";
 
-function NewCandidate(user, setUser) {
+function NewCandidate({ user, setUser }) {
     const [newCandidate, setNewCandidate] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // set new candidate and reload the page
-        console.log(newCandidate);
-        const res = await createCandidate(user.id, newCandidate)
+        await updateUser(user.id, {...user, type: "candidate"});
+        const res = await createCandidate(user.id, newCandidate);
+        console.log(res);
         setUser(res);
     }
 
@@ -23,11 +24,11 @@ function NewCandidate(user, setUser) {
         <form onSubmit={handleSubmit} >
             <h3>Create your candidate profile</h3>
             <div className="mb-3 form-group">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="fullName">Name</label>
                 <input
-                    id="name"
-                    name="name"
-                    type="name"
+                    id="fullName"
+                    name="fullName"
+                    type="fullName"
                     value={newCandidate?.name}
                     placeholder="Enter Name"
                     className="form-control"

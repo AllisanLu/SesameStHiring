@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CandidateNavigation from "../components/candidate/CandidateNavigation";
 import { updateCandidate, deleteCandidate } from "../database";
 
@@ -10,12 +10,17 @@ function CandidatePage({ user, setUser }) {
 
   const [candidate, setCandidate] = useState(user);
 
+  useEffect(()=> {
+    if (user) {
+      setCandidate(user);
+    }
+  }, [user])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // set new candidate and reload the page
-    console.log(candidate);
-    //const res = await createCandidate(user.id, newCandidate)
-    //setUser(res);
+    const res = await updateCandidate(user.id, candidate)
+    console.log(res);
+    setUser(res);
   }
 
   const handleOnChange = (e) => {
@@ -30,17 +35,17 @@ function CandidatePage({ user, setUser }) {
     <div className="CandidatePage">
       <CandidateNavigation></CandidateNavigation>
       <h1>Welcome Candidate {user?.username}!</h1>
-      {user.type ? (<Outlet />) : <NewCandidate user={user} setUser={setUser} />}
-      {user.type ?
+      {user.fullName ? (<Outlet />) : <NewCandidate user={user} setUser={setUser} />}
+      {user.fullName ?
         <form onSubmit={handleSubmit}>
           <h3>Update your candidate profile</h3>
           <div className="mb-3 form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="fullName">Name</label>
             <input
-              id="name"
-              name="name"
-              type="name"
-              value={candidate?.name}
+              id="fullName"
+              name="fullName"
+              type="fullName"
+              value={candidate?.fullName}
               placeholder="Enter Name"
               className="form-control"
               onChange={handleOnChange}
@@ -102,7 +107,7 @@ function CandidatePage({ user, setUser }) {
           </div>
           <div className="button-group">
             <button className="btn btn-secondary" type="submit">
-              Create
+              Update
             </button>
           </div>
         </form> : null}
