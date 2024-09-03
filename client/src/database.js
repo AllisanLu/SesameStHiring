@@ -20,19 +20,27 @@ async function updateUser(id, user) {
 }
 
 async function createUser(user) {
-    fetch("http://localhost:8080/api/users", {
+    return fetch("http://localhost:8080/api/users", {
         headers: { "Content-Type": "application/json" },
         method: "POST",
         body: JSON.stringify(user)
     })
         .then(response => response.json())
-        .then(console.log("Added user"))
 
 }
 
 async function getCandidates() {
     return fetch("http://localhost:8080/api/candidates")
     .then(response => response.json())
+}
+
+async function getCandidate(id) {
+    return fetch(`http://localhost:8080/api/candidates/${id}`)
+    .then(response => { 
+        if (response.ok)
+            return response.json()
+        return null
+     })
 }
 
 async function createCandidate(id, candidate) {
@@ -62,14 +70,43 @@ async function getManagers() {
     .then(response => response.json())
 }
 
+async function getManager(id) {
+    return fetch(`http://localhost:8080/api/managers/${id}`)
+    .then(response => { 
+        if (response.ok)
+            return response.json()
+        return null
+     })
+}
+
+async function createManager(id, manager) {
+    return fetch("http://localhost:8080/api/managers", {
+        headers: { "Content-Type": "application/json"},
+        method: "POST",
+        body: JSON.stringify({...manager, id})
+    }).then(res => res.json());
+}
+
+async function updateManager(id, manager) {
+    return fetch(`http://localhost:8080/api/managers/${id}`, {
+        headers: { "Content-Type": "application/json"},
+        method: "PUT",
+        body: JSON.stringify({...manager, id})
+    }).then(res => res.json());
+}
+
 export {
     getUsers,
     getUser,
     createUser,
     updateUser,
     getCandidates,
+    getCandidate,
     createCandidate,
     updateCandidate,
     deleteCandidate,
-    getManagers
+    getManagers,
+    getManager,
+    createManager,
+    updateManager
 }

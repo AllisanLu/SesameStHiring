@@ -25,6 +25,10 @@
   box-shadow: 5px 10px rgba(0, 0, 0, 0.1);
 }
 
+.left-text {
+  text-align: left;
+}
+
 
 table thead tr th {
   position: sticky;

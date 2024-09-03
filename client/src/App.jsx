@@ -10,12 +10,17 @@ import { useEffect, useState } from 'react';
 
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import JobList from './components/JobList';
 import ApplicationList from './components/candidate/ApplicationList';
 import CandidateList from './components/manager/CandidateList';
 import UserList from './components/admin/UserList.jsx';
+import ManagerList from './components/admin/ManagerList.jsx';
 
-import { getUser, getUsers, getCandidates, getManagers } from './database.js'
+import ManagerView from './components/manager/ManagerView.jsx';
+import CandidateView from './components/candidate/CandidateView.jsx';
+
+import { getUser, getUsers, getCandidates, getManagers, getManager, getCandidate } from './database.js'
 
 
 function App() {
@@ -24,13 +29,6 @@ function App() {
   const [candidates, setCandidates] = useState([]);
   const [users, setUsers] = useState([]);
   const [managers, setManagers] = useState([]);
-
-  const testManager = {
-    id: 1,
-    username: "Joe",
-    password: "pass",
-    type: "manager"
-  }
 
   const testAdmin = {
     id: 10,
@@ -87,7 +85,24 @@ function App() {
   }
 
   const loadUser = () => {
-    getUser(1).then(user => setCurrentUser(user))
+    getUser(1).then(user => {
+      if (user.type === "candidate") {
+        getCandidate(user.id).then(candidate => {
+          if (candidate) {
+            setCurrentUser(candidate)
+            return
+          }
+        })
+      } else if (user.type === "manager") {
+        getManager(user.id).then(manager => {
+          if (manager) {
+            setCurrentUser(manager)
+            return
+          }
+        })
+      }
+      setCurrentUser(user)
+    })
   }
 
   const loadUsers = () => {
@@ -99,8 +114,8 @@ function App() {
     getCandidates().then(res => setCandidates(res));
   }
 
-  const loadManagers =  () => {
-     getManagers().then(res => setManagers(res));
+  const loadManagers = () => {
+    getManagers().then(res => setManagers(res));
   }
 
   useEffect(() => {
@@ -112,9 +127,10 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
+          <Route path="register" element={<RegisterPage setCurrentUser={setCurrentUser} />} />
 
           <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
+            <Route path="" element={<CandidateView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
             <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
           </Route>
@@ -123,12 +139,13 @@ function App() {
             <Route path="users" element={<UserList users={users} setUsers={setUsers} />} />
             <Route path="candidates" element={<CandidateList user={testAdmin} candidates={candidates} loadCandidates={loadCandidates} />} />
             <Route path="joblistings" element={<JobList user={testAdmin} jobs={testJobs} />} />
-            <Route path="managers" element={<ManagerList user={testAdmin} managers={managers} />} />
+            <Route path="managers" element={<ManagerList user={testAdmin} managers={managers} loadManagers={loadManagers} />} />
           </Route>
 
-          <Route path="manager" element={<ManagerPage user={testManager} />} >
-            <Route path="joblistings" element={<JobList user={testManager} jobs={testJobs} />}></Route>
-            <Route path="candidates" element={<CandidateList user={testManager} candidates={candidates} loadCandidates={loadCandidates} />} ></Route>
+          <Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
+            <Route path="" element={<ManagerView user={currentUser} setUser={setCurrentUser} />}></Route>
+            <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
+            <Route path="candidates" element={<CandidateList user={currentUser} candidates={candidates} loadCandidates={loadCandidates} />} ></Route>
           </Route>
 
           <Route

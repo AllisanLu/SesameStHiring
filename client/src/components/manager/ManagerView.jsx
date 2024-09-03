@@ -1,35 +1,47 @@
-import { useState } from "react";
-import { createCandidate, updateUser } from "../../database";
+import { useState, useEffect } from "react";
+import { createManager, updateUser, updateManager, getManager } from "../../database";
 
-function NewCandidate({ user, setUser }) {
-    const [newCandidate, setNewCandidate] = useState({});
+function ManagerView({ user, setUser }) {
+    const [manager, setManager] = useState(user)
+
+    useEffect(()=> {
+        if (user) {
+          setManager(user);
+        }
+      }, [user])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // set new candidate and reload the page
-        await updateUser(user.id, {...user, type: "candidate"});
-        const res = await createCandidate(user.id, newCandidate);
-        console.log(res);
+        const check = await getManager(user.id);
+
+        let res = null;
+        if (!check) {
+            await updateUser(user.id, {...user, type: "manager"});
+            res = await createManager(user.id, manager);
+        } else {
+            res = await updateManager(user.id, manager);
+        }
         setUser(res);
     }
 
     const handleOnChange = (e) => {
-        setNewCandidate({
-            ...newCandidate,
+        setManager({
+            ...manager,
             [e.target.name]: e.target.value
         })
     }
 
     return (
         <form onSubmit={handleSubmit} >
-            <h3>Create your candidate profile</h3>
+            <h3>{user?.fullName ? "Update" : "Create"} your manager profile</h3>
             <div className="mb-3 form-group">
                 <label htmlFor="fullName">Name</label>
                 <input
                     id="fullName"
                     name="fullName"
                     type="fullName"
-                    value={newCandidate?.name}
+                    value={manager?.fullName}
                     placeholder="Enter Name"
                     className="form-control"
                     onChange={handleOnChange}
@@ -42,21 +54,8 @@ function NewCandidate({ user, setUser }) {
                     id="email"
                     type="email"
                     name="email"
-                    value={newCandidate?.email}
+                    value={manager?.email}
                     placeholder="Enter email"
-                    className="form-control"
-                    onChange={handleOnChange}
-                    required
-                />
-            </div>
-            <div className="mb-3 form-group">
-                <label htmlFor="address">Address</label>
-                <input
-                    id="address"
-                    type="text"
-                    name="address"
-                    value={newCandidate?.address}
-                    placeholder="Enter address"
                     className="form-control"
                     onChange={handleOnChange}
                     required
@@ -69,7 +68,7 @@ function NewCandidate({ user, setUser }) {
                     type="tel"
                     name="phone"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    value={newCandidate?.phone}
+                    value={manager?.phone}
                     placeholder="123-456-7890"
                     className="form-control"
                     onChange={handleOnChange}
@@ -77,13 +76,13 @@ function NewCandidate({ user, setUser }) {
                 />
             </div>
             <div className="mb-3 form-group">
-                <label htmlFor="resume">Resume</label>
-                <textarea
-                    id="resume"
+                <label htmlFor="department">Department</label>
+                <input
+                    id="department"
                     type="text"
-                    name="resume"
-                    value={newCandidate?.resume}
-                    placeholder="Enter resume details"
+                    name="department"
+                    value={manager?.department}
+                    placeholder="Enter department"
                     className="form-control"
                     onChange={handleOnChange}
                     required
@@ -91,11 +90,11 @@ function NewCandidate({ user, setUser }) {
             </div>
             <div className="button-group">
                 <button className="btn btn-secondary" type="submit">
-                    Create
+                    {manager?.fullName ? "Update" : "Create"}
                 </button>
             </div>
         </form>
     )
 }
 
-export default NewCandidate
+export default ManagerView

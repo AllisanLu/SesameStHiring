@@ -1,13 +1,23 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { createUser } from '../database.js'
+import { useNavigate } from "react-router-dom";
 
-const RegisterPage = () => {
+const RegisterPage = ({setCurrentUser}) => {
     const [newUser, setNewUser] = useState({});
+    let navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        createUser(newUser);
+        const response = await createUser(newUser);
+        setCurrentUser(response);
+
+        if (response.type === "candidate") {
+            navigate("/candidate");
+        } else if (response.type === "manager") {
+            navigate("/manager");
+        }
+
         setNewUser({ username: "", password: "" });
     }
 
@@ -47,19 +57,6 @@ const RegisterPage = () => {
                             required
                         />
                     </div>
-                    {/* <div className="mb-3 form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={newUser?.email}
-                            placeholder="Enter email"
-                            className="form-control"
-                            onChange={handleOnChange}
-                            required
-                        />
-                    </div> */}
                     <div className="mb-3 form-group">
                         <label htmlFor="password">Password</label>
                         <input
@@ -72,6 +69,19 @@ const RegisterPage = () => {
                             onChange={handleOnChange}
                             required
                         />
+                    </div>
+                    <div className="form-check">
+                        <h4>Select Role</h4>
+                        <input className="form-check-input" type="radio" name="type" value="candidate" id="flexRadioDefault1" onChange={handleOnChange}/>
+                            <label className="form-check-label" htmlFor="flexRadioDefault1">
+                                Candidate
+                            </label>
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="type" value="manager" onChange={handleOnChange} id="flexRadioDefault2" />
+                            <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                Manager
+                            </label>
                     </div>
                     <div className="button-group">
                         <button className="btn btn-success" type="submit">

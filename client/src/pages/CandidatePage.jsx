@@ -4,7 +4,7 @@ import CandidateNavigation from "../components/candidate/CandidateNavigation";
 import { updateCandidate, deleteCandidate } from "../database";
 
 import "./portal.css"
-import NewCandidate from "../components/candidate/NewCandidate";
+import CandidateView from "../components/candidate/CandidateView";
 
 function CandidatePage({ user, setUser }) {
 
@@ -16,101 +16,11 @@ function CandidatePage({ user, setUser }) {
     }
   }, [user])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const res = await updateCandidate(user.id, candidate)
-    console.log(res);
-    setUser(res);
-  }
-
-  const handleOnChange = (e) => {
-    setCandidate({
-      ...candidate,
-      [e.target.name]: e.target.value
-    })
-  }
-
-
   return (
-    <div className="CandidatePage">
+    <div className="Page">
       <CandidateNavigation></CandidateNavigation>
       <h1>Welcome Candidate {user?.username}!</h1>
-      {user.fullName ? (<Outlet />) : <NewCandidate user={user} setUser={setUser} />}
-      {user.fullName ?
-        <form onSubmit={handleSubmit}>
-          <h3>Update your candidate profile</h3>
-          <div className="mb-3 form-group">
-            <label htmlFor="fullName">Name</label>
-            <input
-              id="fullName"
-              name="fullName"
-              type="fullName"
-              value={candidate?.fullName}
-              placeholder="Enter Name"
-              className="form-control"
-              onChange={handleOnChange}
-              required
-            />
-          </div>
-          <div className="mb-3 form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={candidate?.email}
-              placeholder="Enter email"
-              className="form-control"
-              onChange={handleOnChange}
-              required
-            />
-          </div>
-          <div className="mb-3 form-group">
-            <label htmlFor="address">Address</label>
-            <input
-              id="address"
-              type="text"
-              name="address"
-              value={candidate?.address}
-              placeholder="Enter address"
-              className="form-control"
-              onChange={handleOnChange}
-              required
-            />
-          </div>
-          <div className="mb-3 form-group">
-            <label htmlFor="phone">Phone</label>
-            <input
-              id="phone"
-              type="tel"
-              name="phone"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              value={candidate?.phone}
-              placeholder="123-456-7890"
-              className="form-control"
-              onChange={handleOnChange}
-              required
-            />
-          </div>
-          <div className="mb-3 form-group">
-            <label htmlFor="resume">Resume</label>
-            <textarea
-              id="resume"
-              type="text"
-              name="resume"
-              value={candidate?.resume}
-              placeholder="Enter resume details"
-              className="form-control"
-              onChange={handleOnChange}
-              required
-            />
-          </div>
-          <div className="button-group">
-            <button className="btn btn-secondary" type="submit">
-              Update
-            </button>
-          </div>
-        </form> : null}
+      {user.fullName ? (<Outlet />) : <CandidateView user={user} setUser={setUser} />}
       <img id="welcomeImg" src="https://wallpapers.com/images/hd/cute-cartoon-sesame-street-characters-1841n41pmobi9iqy.jpg" alt="characters" />
     </div>
   )

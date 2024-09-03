@@ -20,41 +20,20 @@ function UserList({ users, setUsers }) {
         <table className="table table-striped">
           <thead>
             <tr>
+              <th>Id</th>
               <th>Username</th>
               <th>Password</th>
               <th>User Role</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {users?.map((user) => {
               return (
                 <tr key={user.id} onClick={() => handleView(user)}>
+                  <td>{user.id}</td>
                   <td>{user.username}</td>
                   <td>{user.password}</td>
                   <td>{user.type}</td>
-                  <td>{user.type === "admin" ? (
-                    <div>
-                      <button className="btn btn-secondary">Set as Manager</button>
-                      <button className="btn btn-secondary">Set as Candidate</button>
-                      <button className="btn btn-secondary">Delete User</button>
-                    </div>
-                  ) : null}
-                    {user.type === "manager" ? (
-                      <div>
-                        <button className="btn btn-secondary">Set as Admin</button>
-                        <button className="btn btn-secondary">Set as Candidate</button>
-                        <button className="btn btn-secondary">Delete User</button>
-                      </div>
-                    ) : null}
-                    {user.type === "candidate" ? (
-                      <div>
-                        <button className="btn btn-secondary">Set as Manager</button>
-                        <button className="btn btn-secondary">Set as Admin</button>
-                        <button className="btn btn-secondary">Delete User</button>
-                      </div>
-                    ) : null}
-                  </td>
                 </tr>
               )
             }

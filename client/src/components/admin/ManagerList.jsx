@@ -22,8 +22,7 @@ function ManagerList({ user, managers, loadManagers }) {
               <th>Name</th>
               <th>Email</th>
               <th>Phone Number</th>
-              <th>Address</th>
-              <th>Resume</th>
+              <th>Department</th>
             </tr>
           </thead>
           <tbody className="table-horizontal">
@@ -33,8 +32,7 @@ function ManagerList({ user, managers, loadManagers }) {
                   <td>{manager?.fullName}</td>
                   <td>{manager?.email}</td>
                   <td>{manager?.phone}</td>
-                  <td>{manager?.address}</td>
-                  <td>{manager?.resume}</td>
+                  <td>{manager?.department}</td>
                 </tr>
               )
             }
@@ -42,12 +40,9 @@ function ManagerList({ user, managers, loadManagers }) {
           </tbody>
         </table>
       </div>
-      {user.type === "admin" ?
-        <EditCandidate loadCandidates={loadCandidates} selectedCandidate={selectedCandidate} setSelectedCandidate={setSelectedCandidate} />
-        : <Candidate  loadCandidates={loadCandidates} selectedCandidate={selectedCandidate} setSelectedCandidate={setSelectedCandidate} />
-      }
+      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager}/>
     </>
   )
 }
 
-export default CandidateList
+export default ManagerList
