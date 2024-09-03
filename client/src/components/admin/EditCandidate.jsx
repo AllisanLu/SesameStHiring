@@ -17,6 +17,15 @@ const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate
         setSelectedCandidate();
     }
 
+    const resetState = () => {
+        setSelectedCandidate();
+        setCandidate();
+    };
+
+    const handleCancel = (e) => {
+        e.preventDefault();
+        resetState();
+    };
 
     const handleOnChange = (e) => {
         setCandidate({
@@ -27,8 +36,8 @@ const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate
 
     return (
         <>
-            {candidate ? (<form onSubmit={handleSubmit} >
-                <h3>Edit Candidate {candidate?.fullName} </h3>
+            {candidate ? (<form onSubmit={handleSubmit} onReset={handleCancel} >
+                <h3>Edit Candidate</h3>
                 <div className="mb-3 form-group">
                     <label htmlFor="fullName">Name</label>
                     <input
@@ -95,7 +104,14 @@ const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate
                         required
                     />
                 </div>
-
+                <div className="button-group">
+                        <button className="btn btn-success" type="submit">
+                            Update
+                        </button>
+                        <button className="btn btn-secondary" type="reset">
+                            Cancel
+                        </button>
+                    </div>
             </form >) : null}
 
         </>

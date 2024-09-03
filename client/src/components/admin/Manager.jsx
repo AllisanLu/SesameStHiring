@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { updateManager } from "../../database";
 
-function Manager({ selectedManager, setSelectedManager }) {
+function Manager({ selectedManager, setSelectedManager, loadManagers }) {
 
     const [manager, setManager] = useState(selectedManager);
 
@@ -10,7 +11,12 @@ function Manager({ selectedManager, setSelectedManager }) {
     }, [selectedManager]);
 
     const handleSubmit = (e) => {
-        console.log(`Updating user ${manager.name}`)
+        e.preventDefault();
+        updateManager(manager.id, manager).then(res => {
+            setManager();
+            setSelectedManager();
+            loadManagers();
+        })
     }
 
     const resetState = () => {

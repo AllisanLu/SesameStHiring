@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { updateUser } from "../../database";
 
-function User({ selectedUser, setSelectedUser }) {
+function User({ selectedUser, setSelectedUser, loadUsers }) {
 
     const [user, setUser] = useState(selectedUser);
 
@@ -15,6 +15,7 @@ function User({ selectedUser, setSelectedUser }) {
         updateUser(user.id, user).then(res => {
             setUser();
             setSelectedUser();
+            loadUsers();
         })
     }
 
@@ -68,21 +69,21 @@ function User({ selectedUser, setSelectedUser }) {
                     <h4>Select Role</h4>
                     <div className="form-check">
                         <input className="form-check-input" type="radio" name="type" value="candidate" id="flexRadioDefault1"
-                            defaultChecked={user.type === "candidate"} />
+                            defaultChecked={user.type === "candidate"} onChange={handleOnChange}/>
                         <label className="form-check-label" htmlFor="flexRadioDefault1">
                             Candidate
                         </label>
                     </div>
                     <div className="form-check">
                         <input className="form-check-input" type="radio" name="type" value="manager" id="flexRadioDefault2"
-                            defaultChecked={user.type === "manager"} />
+                            defaultChecked={user.type === "manager"}  onChange={handleOnChange}/>
                         <label className="form-check-label" htmlFor="flexRadioDefault2">
                             Manager
                         </label>
                     </div>
                     <div className="form-check">
                         <input className="form-check-input" type="radio" name="type" value="admin" id="flexRadioDefault3"
-                            defaultChecked={user.type === "admin"} />
+                            defaultChecked={user.type === "admin"} onChange={handleOnChange}/>
                         <label className="form-check-label" htmlFor="flexRadioDefault3">
                             Admin
                         </label>

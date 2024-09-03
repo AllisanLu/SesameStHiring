@@ -106,6 +106,7 @@ function App() {
   }
 
   const loadUsers = () => {
+    console.log("loading users")
     getUsers()
       .then(users => setUsers(users))
   }
@@ -129,24 +130,24 @@ function App() {
           <Route exact path="/" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage setCurrentUser={setCurrentUser} />} />
 
-          <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
+          {currentUser.type === "candidate" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<CandidateView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
             <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
-          </Route>
+          </Route> : null }
 
           <Route path="admin" element={<AdminPage user={testAdmin} />} >
-            <Route path="users" element={<UserList users={users} setUsers={setUsers} />} />
+            <Route path="users" element={<UserList users={users} loadUsers={loadUsers} />} />
             <Route path="candidates" element={<CandidateList user={testAdmin} candidates={candidates} loadCandidates={loadCandidates} />} />
             <Route path="joblistings" element={<JobList user={testAdmin} jobs={testJobs} />} />
-            <Route path="managers" element={<ManagerList user={testAdmin} managers={managers} loadManagers={loadManagers} />} />
+            <Route path="managers" element={<ManagerList managers={managers} loadManagers={loadManagers} />} />
           </Route>
 
-          <Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
+          {currentUser.type === "manager" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<ManagerView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
             <Route path="candidates" element={<CandidateList user={currentUser} candidates={candidates} loadCandidates={loadCandidates} />} ></Route>
-          </Route>
+          </Route> : null }
 
           <Route
             path="*"

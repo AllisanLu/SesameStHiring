@@ -36,7 +36,7 @@ function JobList({ user, jobs }) {
   return (
     <>
       <h3>Avaliable Jobs</h3>
-      <div className="table-responsive">
+      <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
             <tr>
@@ -46,7 +46,7 @@ function JobList({ user, jobs }) {
               <th>--</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table-horizontal">
             {jobs?.map((job) => {
               return (
                 <tr key={job.id} onClick={() => handleSelect(job)}>

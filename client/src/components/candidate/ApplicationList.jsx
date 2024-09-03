@@ -25,7 +25,7 @@ function ApplicationList({ apps }) {
   return (
     <>
       <h3>Job Applications</h3>
-      <div className="table-responsive">
+      <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
             <tr>
@@ -34,7 +34,7 @@ function ApplicationList({ apps }) {
               <th>Hiring Manager</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table-horizontal">
             {applications?.map((application) => (
               <tr key={application.id} onClick={() => handleSelect(application)}>
                 <td>{application.job.title}</td>

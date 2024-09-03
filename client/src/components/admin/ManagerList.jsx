@@ -1,8 +1,13 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Manager from "./Manager";
 
-function ManagerList({ user, managers, loadManagers }) {
+function ManagerList({ managers, loadManagers }) {
+  const [managerList, setManagerList] = useState(managers)
   const [selectedManager, setSelectedManager] = useState();
+
+  useEffect(() => {
+    if (managers) setManagerList(managers) 
+  }, [managers])
 
   const handleView = (manager) => {
     if (manager.id === selectedManager?.id) {
@@ -26,7 +31,7 @@ function ManagerList({ user, managers, loadManagers }) {
             </tr>
           </thead>
           <tbody className="table-horizontal">
-            {managers?.map((manager) => {
+            {managerList?.map((manager) => {
               return (
                 <tr key={manager.id} onClick={() => handleView(manager)}>
                   <td>{manager?.fullName}</td>
@@ -40,7 +45,7 @@ function ManagerList({ user, managers, loadManagers }) {
           </tbody>
         </table>
       </div>
-      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager}/>
+      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager} loadManagers={loadManagers}/>
     </>
   )
 }

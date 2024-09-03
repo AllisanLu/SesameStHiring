@@ -1,8 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import User from "./User";
 
-function UserList({ users, setUsers }) {
+function UserList({ users, loadUsers }) {
+  const [userList, setUserList] = useState(users)
   const [selectedUser, setSelectedUser] = useState();
+
+  useEffect(() => {
+    if (users) setUserList(users) 
+  }, [users])
 
   const handleView = (user) => {
     if (user.id === selectedUser?.id) {
@@ -16,7 +21,7 @@ function UserList({ users, setUsers }) {
     <>
       {/* Could sort candidates by the job they applied for */}
       <h3>System Users</h3>
-      <div className="table-responsive">
+      <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
             <tr>
@@ -26,8 +31,8 @@ function UserList({ users, setUsers }) {
               <th>User Role</th>
             </tr>
           </thead>
-          <tbody>
-            {users?.map((user) => {
+          <tbody className="table-horizontal">
+            {userList?.map((user) => {
               return (
                 <tr key={user.id} onClick={() => handleView(user)}>
                   <td>{user.id}</td>
@@ -41,7 +46,7 @@ function UserList({ users, setUsers }) {
           </tbody>
         </table>
       </div>
-      <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} setUsers={setUsers} />
+      <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} loadUsers={loadUsers} />
     </>
   )
 }
