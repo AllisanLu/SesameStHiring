@@ -9,7 +9,7 @@ function Candidate({ selectedCandidate, setSelectedCandidate }) {
     else setCandidate();
   }, [selectedCandidate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (candidate) => {
     console.log(`Hiring candidate ${candidate.name}`)
   }
 

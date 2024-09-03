@@ -6,3 +6,28 @@
 .logo {
   height: 6em;
 }
+
+.selected {
+  font-weight: bold;
+}
+
+.table-horizontal {
+  width: 60%;
+  overflow-x: auto;
+}
+
+.table-wrapper {
+  max-height: 250px;
+  overflow-y: auto;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+table thead tr th {
+  position: sticky;
+  z-index: 100;
+  top: 0;
+}

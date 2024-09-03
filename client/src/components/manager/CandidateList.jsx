@@ -16,25 +16,33 @@ function CandidateList({ candidates }) {
     <>
       {/* Could sort candidates by the job they applied for */}
       <h3>Candidates</h3>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Candidate Name</th>
-            <th>Candidate Id</th>
-          </tr>
-        </thead>
-        <tbody>
-          {candidates?.map((candidate) => {
-            return (
-              <tr key={candidate.id} onClick={() => handleView(candidate)}>
-                <td>{candidate.name}</td>
-                <td>{candidate.id}</td>
-              </tr>
-            )
-          }
-          )}
-        </tbody>
-      </table>
+      <div className="table-wrapper">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Address</th>
+              <th>Resume</th>
+            </tr>
+          </thead>
+          <tbody className="table-horizontal">
+            {candidates?.map((candidate) => {
+              return (
+                <tr key={candidate.id} onClick={() => handleView(candidate)}>
+                  <td>{candidate.name}</td>
+                  <td>{candidate.email}</td>
+                  <td>{candidate.phone}</td>
+                  <td>{candidate.address}</td>
+                  <td>{candidate.resume}</td>
+                </tr>
+              )
+            }
+            )}
+          </tbody>
+        </table>
+      </div>
       <Candidate selectedCandidate={selectedCandidate} setSelectedCandidate={setSelectedCandidate} />
     </>
   )

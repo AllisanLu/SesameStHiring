@@ -36,30 +36,33 @@ function JobList({ user, jobs }) {
   return (
     <>
       <h3>Avaliable Jobs</h3>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Job Title</th>
-            <th>Job Description</th>
-            <th>Hiring Manager</th>
-            <th>--</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobs?.map((job) => {
-            return (
-            <tr key={job.id} onClick={() => handleSelect(job)}>
-              <td>{job.title}</td>
-              <td>{job.description}</td>
-              <td>{job.manager}</td>
-              <td>{user?.type === "manager" ? 
-                <button onClick={(job) => handleDelete(job)}>Delete</button> 
-                : <button onClick={(e) => handleApply(e)}>Apply</button>}</td>
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Job Description</th>
+              <th>Hiring Manager</th>
+              <th>--</th>
             </tr>
-          )}
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {jobs?.map((job) => {
+              return (
+                <tr key={job.id} onClick={() => handleSelect(job)}>
+                  <td>{job.title}</td>
+                  <td>{job.description}</td>
+                  <td>{job.manager}</td>
+                  <td>{user?.type === "manager" ?
+                    <button className="btn btn-danger" onClick={(job) => handleDelete(job)}>Delete</button>
+                    : <button className="btn btn-success" onClick={(e) => handleApply(e)}>Apply</button>}</td>
+                </tr>
+              )
+            }
+            )}
+          </tbody>
+        </table>
+      </div>
       <Job user={user} selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleDelete={handleDelete} />
     </>
   )

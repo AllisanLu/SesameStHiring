@@ -3,6 +3,7 @@ import RegisterPage from './pages/RegisterPage';
 import ErrorPage from './pages/ErrorPage';
 import ManagerPage from './pages/ManagerPage';
 import CandidatePage from './pages/CandidatePage';
+import AdminPage from './pages/AdminPage.jsx';
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
@@ -23,7 +24,15 @@ function App() {
   const testManager = {
     id: 1,
     username: "Joe",
-    password: "pass"
+    password: "pass",
+    type: "manager"
+  }
+
+  const testAdmin = {
+    id: 10,
+    username: "Admin",
+    password: "admin",
+    type: "admin"
   }
 
   const testJobs = [
@@ -67,12 +76,12 @@ function App() {
     {
       name: "Allison",
       id: 5,
-      job: {
-        title: "CS",
-        description: "writing code",
-        manager: 5,
-        id: 1
-      }
+      username: "allisan",
+      password: "pass",
+      email: "email@e.com",
+      phone: "770-777-1234",
+      address: "123 street",
+      resume: "Wahoo experience....dkfjadlkfjklsjdfkajdfkjadlkfjalsdjflkajdlkfjalksdjflkajdlskfjalkdjdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddf"
     }
   ]
 
@@ -96,7 +105,7 @@ function App() {
             <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
           </Route>
 
-          <Route path="admin" element={<h1>Admin</h1>} />
+          <Route path="admin" element={<AdminPage user={testAdmin} />} />
           
           <Route path="manager" element={<ManagerPage user={testManager} />} >
             <Route path="joblistings" element={<JobList user={testManager} jobs={testJobs} />}></Route>

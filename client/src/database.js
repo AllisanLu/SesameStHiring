@@ -1,7 +1,12 @@
 // for doing API calls :D
 
+async function getUsers() {
+    return fetch("http://localhost:8080/api/users")
+    .then(response => response.json())
+}
+
 async function getUser(id) {
-    return fetch("http://localhost:8080/api/users/5")
+    return fetch("http://localhost:8080/api/users/{id}")
     .then(response => response.json())
 }
 
@@ -25,6 +30,7 @@ async function createCandidate(id, candidate) {
 }
 
 export {
+    getUsers,
     getUser,
     createUser,
     createCandidate
