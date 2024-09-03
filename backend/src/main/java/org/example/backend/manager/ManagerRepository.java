@@ -11,6 +11,10 @@ public interface ManagerRepository extends JpaRepository<Manager, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO manager (id) VALUES (:id)", nativeQuery = true)
-    void insertManager(@Param("id") int id);
+    @Query(value = "INSERT INTO manager (id, full_name, email, department, phone) VALUES (:id, :fullName, :email, :department, :phone)", nativeQuery = true)
+    void insertManager(@Param("id") int id,
+                       @Param("fullName") String fullName,
+                       @Param("email") String email,
+                       @Param("department") String department,
+                       @Param("phone") String phone);
 }

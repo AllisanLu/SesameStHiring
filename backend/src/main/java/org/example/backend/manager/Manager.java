@@ -13,4 +13,9 @@ import org.example.backend.user.User;
 @Setter
 public class Manager extends User {
 
+    private String fullName;
+    private String email;
+    private String department;
+    private String phone;
+
 }

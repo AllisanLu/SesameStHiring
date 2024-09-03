@@ -45,7 +45,11 @@ public class ManagerServiceImpl implements ManagerService {
         if (userOptional.isPresent()) {
 
             managerRepository.insertManager(
-                    manager.getId()
+                    manager.getId(),
+                    manager.getFullName(),
+                    manager.getEmail(),
+                    manager.getDepartment(),
+                    manager.getPhone()
             );
 
             entityManager.flush();
@@ -62,6 +66,11 @@ public class ManagerServiceImpl implements ManagerService {
         Optional<Manager> managerOptional = managerRepository.findById(id);
         if (managerOptional.isPresent()) {
             Manager managerToUpdate = managerOptional.get();
+
+            managerToUpdate.setFullName(manager.getFullName());
+            managerToUpdate.setEmail(manager.getEmail());
+            managerToUpdate.setDepartment(manager.getDepartment());
+            managerToUpdate.setPhone(manager.getPhone());
 
             return managerRepository.save(managerToUpdate);
         }
