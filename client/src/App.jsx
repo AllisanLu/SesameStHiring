@@ -13,6 +13,8 @@ import JobList from './components/JobList';
 import ApplicationList from './components/candidate/ApplicationList';
 import CandidateList from './components/manager/CandidateList';
 
+import { getUser } from './database.js'
+
 
 function App() {
 
@@ -75,9 +77,7 @@ function App() {
   ]
 
   const getuser = () => {
-    fetch("http://localhost:8080/api/users/5")
-    .then(response => response.json())
-    .then(user => setCurrentUser(user))
+    getUser(5).then(user => setCurrentUser(user))
   }
 
   useEffect(() => {
@@ -91,7 +91,7 @@ function App() {
           <Route exact path="/" element={<LoginPage/>} />
           <Route path="register" element={<RegisterPage />} />
 
-          <Route path="candidate" element={<CandidatePage user={currentUser} />} >
+          <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser}/>} >
             <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
             <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
           </Route>

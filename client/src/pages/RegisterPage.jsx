@@ -1,19 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { createUser } from '../database.js'
 
 const RegisterPage = () => {
     const [newUser, setNewUser] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8080/api/users", {
-            headers: { "Content-Type": "application/json" },
-            method: "POST",
-            body: JSON.stringify(newUser)
-        })
-            .then(response => response.json())
-            .then(console.log("Added user"))
-
+        createUser(newUser);
         setNewUser({ username: "", password: "" });
     }
 
