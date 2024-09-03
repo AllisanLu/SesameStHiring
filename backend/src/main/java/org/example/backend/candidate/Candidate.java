@@ -26,4 +26,8 @@ public class Candidate extends User {
         this.phone = phone;
         this.resume = resume;
     }
+
+    public Candidate(int id) {
+        super(id);
+    }
 }
