@@ -1,6 +1,6 @@
 #root {
   text-align: center;
-  width: 100%
+  width: 100%;
 }
 
 .logo {
@@ -24,7 +24,7 @@
 }
 
 .table-wrapper {
-  max-height: 200px;
+  max-height: 400px;
   overflow-y: auto;
   display: block;
   margin-bottom: 10px;

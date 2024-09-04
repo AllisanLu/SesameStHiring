@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import User from "./User";
 
 function UserList({ users, loadUsers }) {
-  const [userList, setUserList] = useState(users)
+  const [userList, setUserList] = useState()
   const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {

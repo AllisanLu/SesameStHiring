@@ -1,8 +1,9 @@
 // for doing API calls :D
 
 async function getUsers() {
-    return fetch("http://localhost:8080/api/users")
+    const newUsers = await fetch("http://localhost:8080/api/users")
     .then(response => response.json())
+    return newUsers;
 }
 
 async function getUser(id) {

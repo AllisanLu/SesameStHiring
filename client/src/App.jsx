@@ -106,8 +106,7 @@ function App() {
   }
 
   const loadUsers = () => {
-    getUsers()
-      .then(users => setUsers(users))
+    getUsers().then(res => setUsers(res))
   }
 
   const loadCandidates = () => {
