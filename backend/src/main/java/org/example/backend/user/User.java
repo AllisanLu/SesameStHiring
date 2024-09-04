@@ -20,7 +20,4 @@ public class User {
     private String password;
     private String type;
 
-    public User(int id) {
-        this.id = id;
-    }
 }
