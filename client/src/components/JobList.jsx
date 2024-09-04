@@ -3,19 +3,28 @@ import { deleteJob, getManagerJobs } from "../database";
 
 import Job from "./Job";
 import EditJob from "./manager/EditJob"
+import CreateApplication from "./candidate/CreateApplication";
 
-function JobList({ user, jobs, loadJobs }) {
+function JobList({ user, jobs, loadJobs, loadApplications }) {
   const [creating, setCreating] = useState(false);
   const [viewableJobs, setViewableJobs] = useState(jobs)
-  const [selectedJob, setSelectedJob] = useState()
+  const [selectedJob, setSelectedJob] = useState();
+
+  const [applying, setApplying] = useState(false);
 
   // add a fetch to get the manager's list of jobs
   useEffect(() => {
     if (user?.type === "manager") {
-      console.log("Filtering jobs for manager");
       getManagerJobs(user.id).then(res => setViewableJobs(res))
     }
-    if (jobs) setViewableJobs(jobs)
+    if (jobs) { 
+      if (user?.type === "candidate") {
+        const pendingJobs = jobs.filter((job) => job.listingStatus === "Pending")
+        setViewableJobs(pendingJobs)
+      } else {
+        setViewableJobs(jobs);
+      }
+    }
   }, [jobs])
 
   const handleSelect = (job) => {
@@ -34,8 +43,7 @@ function JobList({ user, jobs, loadJobs }) {
   }
 
   const handleApply = (e) => {
-    // need to open up application page
-    // or just auto applies with candidate information that is already filled out
+   setApplying(true);
   }
 
   const showCreateNewJob = (e) => {
@@ -52,16 +60,15 @@ function JobList({ user, jobs, loadJobs }) {
     <>
       <h3>Listed Jobs</h3>
       <div>
-      {user.type != "candidate" ? <button className="btn btn-success" onClick={showCreateNewJob}>Create Job Listing</button> : null}
+        {user.type != "candidate" ? <button className="btn btn-success" onClick={showCreateNewJob}>Create Job Listing</button> : null}
         <div className="table-wrapper">
           <table className="table table-striped">
             <thead>
               <tr>
+                <th>Job Id</th>
                 <th>Job Title</th>
                 <th>Department</th>
-                <th>Description</th>
                 <th>Hiring Manager</th>
-                <th>Additional Info</th>
                 <th>Date Created</th>
                 <th>Date Closed</th>
                 <th>Status</th>
@@ -71,11 +78,10 @@ function JobList({ user, jobs, loadJobs }) {
               {viewableJobs?.map((job) => {
                 return (
                   <tr key={job.id} onClick={() => handleSelect(job)}>
+                    <td>{job.id}</td>
                     <td>{job.jobTitle}</td>
                     <td>{job.department}</td>
-                    <td>{job.jobDescription}</td>
                     <td>{job.managerId}</td>
-                    <td>{job.additionalInformation}</td>
                     <td>{job.dateListed}</td>
                     <td>{job.dateClosed}</td>
                     <td>{job.listingStatus}</td>
@@ -87,8 +93,10 @@ function JobList({ user, jobs, loadJobs }) {
           </table>
         </div>
       </div>
-      {user.type != "candidate" ? <EditJob user={user} selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleDelete={handleDelete} loadJobs={loadJobs} /> 
-        : <Job selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleApply={handleApply}/>}
+      {user.type != "candidate" ? <EditJob user={user} selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleDelete={handleDelete} loadJobs={loadJobs} />
+        : <Job selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleApply={handleApply} />}
+      {user.type === "candidate" ? <CreateApplication user={user} job={selectedJob} applying={applying} setApplying={setApplying} loadApplications={loadApplications} />
+        : null}
     </>
   )
 }

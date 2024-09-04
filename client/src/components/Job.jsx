@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
+import { getManager } from "../database";
 
 function Job({ selectedJob, setSelectedJob, handleApply }) {
 
   const [job, setJob] = useState(selectedJob);
+  const [manager, setManager] = useState();
 
   useEffect(() => {
-    if (selectedJob) setJob(selectedJob);
-    else setJob();
+    if (selectedJob) {
+      setJob(selectedJob);
+      getManager(selectedJob.managerId).then(res => {
+        setManager(res)
+      })
+    }
+    else {
+      setJob();
+    }
   }, [selectedJob]);
-
-  const apply = (job) => {
-    // Need to create application :0
-
-
-    setJob();
-    setSelectedJob();
-  }
 
   const handleCancel = (e) => {
     setSelectedJob();
@@ -32,12 +33,17 @@ function Job({ selectedJob, setSelectedJob, handleApply }) {
                 <h3>View Job</h3>
                 <div className="left-text">
                   <h4>Title: {job.jobTitle}</h4>
+                  {job.listingStatus ? <>
+                    <h5>Status</h5>
+                    <p>{job.listingStatus}</p>
+                  </> : null}
                   <h5>Department: {job.department}</h5>
-                  <h5>Hiring Manager Id: {job.managerId}</h5>
+                  <h5>Hiring Manager: {manager?.fullName}</h5>
                   <h5>Description</h5>
                   <p>{job.jobDescription}</p>
                   <h5>Additional Information</h5>
                   <p>{job.additionalInformation ? job.additionalInformation : "None"}</p>
+
                   {job.dateListed ? <>
                     <h5>Date created</h5>
                     <p>{job.dateListed}</p>
@@ -46,14 +52,10 @@ function Job({ selectedJob, setSelectedJob, handleApply }) {
                     <h5>Date closed</h5>
                     <p>{job.dateClosed}</p>
                   </> : null}
-                  {job.listingStatus ? <>
-                    <h5>Status</h5>
-                    <p>{job.listingStatus}</p>
-                  </> : null}
 
                   <div className="button-group">
-                    <button className="btn btn-success" onClick={() => handleApply(job)}>Apply</button>
-                    <button className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
+                    <button className="btn btn-success" onClick={handleApply}>Apply</button>
+                    <button className="btn btn-secondary" onClick={handleCancel}>Close</button>
                   </div>
                 </div>
               </div>

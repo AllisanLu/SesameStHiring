@@ -73,6 +73,10 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) 
                                         required
                                     />
                                 </div>
+                                {job.listingStatus ? <> 
+                                    <h5>Status</h5>
+                                    <p>{job.listingStatus}</p>
+                                </> : null}
                                 <div className="mb-3 form-group">
                                     <label htmlFor="department">Department</label>
                                     <input
@@ -129,10 +133,6 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) 
                                     <h5>Date closed</h5>
                                     <p>{job.dateClosed}</p>
                                 </> : null }
-                                {job.listingStatus ? <> 
-                                    <h5>Status</h5>
-                                    <p>{job.listingStatus}</p>
-                                </> : null}
 
                                 <div className="button-group">
                                     <button className="btn btn-success" type="submit">Submit</button>

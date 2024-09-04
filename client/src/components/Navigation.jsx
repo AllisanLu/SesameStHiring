@@ -13,10 +13,11 @@ function Navigation() {
             <button className="dropbtn">Manage
             </button>
             <div className="dropdown-content">
-              <Link to="users">Manage Users</Link>
-              <Link to="candidates">Manage Candidates</Link>
-              <Link to="managers">Manage Managers</Link>
-              <Link to="joblistings">Manage Jobs</Link>
+              <Link to="users">Users</Link>
+              <Link to="candidates">Candidates</Link>
+              <Link to="managers">Managers</Link>
+              <Link to="joblistings">Jobs</Link>
+              <Link to="applications">Applications</Link>
             </div>
           </div>
           <Link to="/">Logout</Link>

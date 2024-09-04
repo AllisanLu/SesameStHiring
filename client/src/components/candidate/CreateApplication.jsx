@@ -1,146 +1,96 @@
 import { useState, useEffect } from "react";
-import { createJob, updateJob } from "../../database";
+import { createApplication } from "../../database";
 
-function CreateApplication({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) {
-
-    const [job, setJob] = useState(selectedJob);
+function CreateApplication({ user, job, applying, setApplying, loadApplications }) {
+    const [creating, setCreating] = useState(false);
+    const [applyingUser, setApplyingUser] = useState(user);
+    const [applyingJob, setApplyingJob] = useState(job);
+    const [app, setApp] = useState({ resume: user?.resume });
 
     useEffect(() => {
-        if (selectedJob) { 
-            if (!selectedJob.id && user.type === "manager") {
-                setJob({
-                    ...selectedJob,
-                    department: user.department,
-                    managerId: user.id
-                })
-            } else {
-                setJob(selectedJob)
+        if (job) {
+            setApplyingJob(job)
+
+            if (applying) { 
+                setCreating(applying)
+            }
+
+            if (user) {
+                setApplyingUser(user)
             }
         }
-        else {
-            setJob()
-        }
-    }, [selectedJob]);
+    }, [applying, user, job])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (job.id) {
-            await updateJob(job.id, job);
-        } else {
-            const fulljob = {
-                ...job,
-                dateListed: new Date(),
-                listingStatus: "Pending"
-            }
-
-           await createJob(fulljob);
+        console.log("Creating new application")
+        const fullapp ={
+            ...app,
+            userId: applyingUser.id,
+            jobId: applyingJob.id,
+            dateApplied: new Date(),
+            applicationStatus: "Pending"
         }
-
-        setSelectedJob();
-        setJob();
-        loadJobs();
+        await createApplication(fullapp);
+        loadApplications();
+        setCreating(false);
+        setApplying(false);
     }
 
     const handleOnChange = (e) => {
-        setSelectedJob({
-            ...job,
+        setApp({
+            ...app,
             [e.target.name]: e.target.value
         })
     }
 
-    const handleCancel =(e) => {
-        setSelectedJob();
-        setJob();
+    const handleCancel = (e) => {
+        setCreating(false);
+        setApplying(false);
     }
 
     return (
         <>
-            {job ?
+            {creating ?
                 (
                     <div className="modal-bg">
                         <div className="modal-content">
-                            <form className="left-text" onSubmit={handleSubmit} onReset={handleCancel}>
-                                <h3>{job.id ? "Update" : "Create"} Job Listing</h3>
-                                <div className="mb-3 form-group">
-                                    <label htmlFor="jobTitle">Job Title</label>
-                                    <input
-                                        id="jobTitle"
-                                        name="jobTitle"
-                                        placeholder="Enter job title"
-                                        value={job?.jobTitle}
-                                        className="form-control"
-                                        onChange={handleOnChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3 form-group">
-                                    <label htmlFor="department">Department</label>
-                                    <input
-                                        id="department"
-                                        name="department"
-                                        placeholder="Enter department"
-                                        value={job?.department}
-                                        className="form-control"
-                                        onChange={handleOnChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3 form-group">
-                                    <label htmlFor="jobDescription">Description</label>
-                                    <input
-                                        id="jobDescription"
-                                        name="jobDescription"
-                                        placeholder="Enter description"
-                                        value={job?.jobDescription}
-                                        className="form-control"
-                                        onChange={handleOnChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3 form-group">
-                                    <label htmlFor="managerId">Manager Id</label>
-                                    <input
-                                        id="managerId"
-                                        name="managerId"
-                                        placeholder="Enter manager id"
-                                        value={job?.managerId}
-                                        className="form-control"
-                                        onChange={handleOnChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3 form-group">
-                                    <label htmlFor="additionalInformation">Additional Info</label>
-                                    <textarea
-                                        id="additionalInformation"
-                                        name="additionalInformation"
-                                        placeholder="Enter any additional information"
-                                        value={job.additionalInformation}
-                                        className="form-control"
-                                        onChange={handleOnChange}
-                                    />
-                                </div>
+                            <div className="background-green">
+                                <h3>Applying for {applyingJob?.jobTitle}</h3>
+                                <form className="left-text" onSubmit={handleSubmit} onReset={handleCancel}>
+                                    <div className="mb-3 form-group">
+                                        <label htmlFor="resume">Resume</label>
+                                        <textarea
+                                            id="resume"
+                                            name="resume"
+                                            placeholder="Enter resume details"
+                                            value={app?.resume}
+                                            className="form-control"
+                                            onChange={handleOnChange}
+                                            required
+                                            rows="6"
+                                        />
+                                    </div>
+                                    <div className="mb-3 form-group">
+                                        <label htmlFor="coverLetter">Cover Letter</label>
+                                        <textarea
+                                            id="coverLetter"
+                                            name="coverLetter"
+                                            placeholder="Enter cover letter"
+                                            value={app?.coverLetter}
+                                            className="form-control"
+                                            onChange={handleOnChange}
+                                            rows="6"
+                                        />
+                                    </div>
 
-                                {job.dateListed ? <>
-                                    <h5>Date created</h5>
-                                    <p>{job.dateListed}</p>
-                                </> : null }
-                                {job.dateClosed ? <>
-                                    <h5>Date closed</h5>
-                                    <p>{job.dateClosed}</p>
-                                </> : null }
-                                {job.listingStatus ? <> 
-                                    <h5>Status</h5>
-                                    <p>{job.listingStatus}</p>
-                                </> : null}
+                                    <div className="button-group">
+                                        <button className="btn btn-success" type="submit">Submit</button>
+                                        <button className="btn btn-secondary" type="reset">Cancel</button>
+                                    </div>
 
-                                <div className="button-group">
-                                    <button className="btn btn-success" type="submit">Submit</button>
-                                    {job.id ? <button className="btn btn-danger" onClick={() => handleDelete(job)}>Delete</button> : null }
-                                    <button className="btn btn-secondary" type="reset">Cancel</button>
-                                </div>
-
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 )

@@ -101,6 +101,11 @@ async function getJobs() {
     .then(response => response.json())
 }
 
+async function getJob(id) {
+    return fetch(`http://localhost:8080/api/jobs/${id}`)
+    .then(response => response.json())
+}
+
 async function createJob(job) {
     return fetch("http://localhost:8080/api/jobs", {
         headers: { "Content-Type": "application/json"},
@@ -128,6 +133,38 @@ async function deleteJob(id) {
     }).then(res => res.json());
 }
 
+async function getApplications() {
+    return fetch("http://localhost:8080/api/applications")
+    .then(response => response.json())
+}
+
+async function getApplicationsByJob(id) {
+    return fetch(`http://localhost:8080/api/applications/job/${id}`)
+    .then(response => response.json())
+}
+
+async function createApplication(app) {
+    return fetch("http://localhost:8080/api/applications", {
+        headers: { "Content-Type": "application/json"},
+        method: "POST",
+        body: JSON.stringify(app)
+    }).then(res => res.json());
+}
+
+async function updateApplication(id, app) {
+    return fetch(`http://localhost:8080/api/applications/${id}`, {
+        headers: { "Content-Type": "application/json"},
+        method: "PUT",
+        body: JSON.stringify(app)
+    }).then(res => res.json());
+}
+
+async function deleteApplication(id) {
+    return fetch(`http://localhost:8080/api/applications/${id}`, {
+        method: "DELETE"
+    });
+}
+
 export {
     getUsers,
     getUser,
@@ -143,8 +180,14 @@ export {
     createManager,
     updateManager,
     getJobs,
+    getJob,
     getManagerJobs,
     createJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    getApplications,
+    getApplicationsByJob,
+    createApplication,
+    deleteApplication,
+    updateApplication
 }
