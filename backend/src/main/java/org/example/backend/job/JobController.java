@@ -1,6 +1,6 @@
 package org.example.backend.job;
 
-import org.example.backend.job.Util.JobBuilder;
+import org.example.backend.job.util.JobBuilder;
 import org.example.backend.job.dto.JobDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/jobs")
 public class JobController {
 
-    JobService jobService;
+    private final JobService jobService;
 
     @Autowired
     public JobController(JobService jobService) {
@@ -43,7 +43,10 @@ public class JobController {
     @PostMapping
     public ResponseEntity<JobDto> createJob(@RequestBody JobDto jobDetails) {
         Job job = jobService.createJob(JobBuilder.getJobFromJobDto(jobDetails), jobDetails.getManagerId());
-        return ResponseEntity.ok(JobBuilder.getJobDtoFromJob(job));
+        if (job != null) {
+            return ResponseEntity.ok(JobBuilder.getJobDtoFromJob(job));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
