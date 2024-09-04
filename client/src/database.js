@@ -96,6 +96,38 @@ async function updateManager(id, manager) {
     }).then(res => res.json());
 }
 
+async function getJobs() {
+    return fetch("http://localhost:8080/api/jobs")
+    .then(response => response.json())
+}
+
+async function createJob(job) {
+    return fetch("http://localhost:8080/api/jobs", {
+        headers: { "Content-Type": "application/json"},
+        method: "POST",
+        body: JSON.stringify(job)
+    }).then(res => res.json());
+}
+
+async function getManagerJobs(managerid) {
+    return fetch(`http://localhost:8080/api/jobs/manager/${managerid}`)
+    .then(response => response.json())
+}
+
+async function updateJob(id, job) {
+    return fetch(`http://localhost:8080/api/jobs/${id}`, {
+        headers: { "Content-Type": "application/json"},
+        method: "PUT",
+        body: JSON.stringify(job)
+    }).then(res => res.json());
+}
+
+async function deleteJob(id) {
+    return fetch(`http://localhost:8080/api/jobs/${id}`, {
+        method: "DELETE"
+    }).then(res => res.json());
+}
+
 export {
     getUsers,
     getUser,
@@ -109,5 +141,10 @@ export {
     getManagers,
     getManager,
     createManager,
-    updateManager
+    updateManager,
+    getJobs,
+    getManagerJobs,
+    createJob,
+    updateJob,
+    deleteJob
 }

@@ -20,32 +20,34 @@ function UserList({ users, loadUsers }) {
   return (
     <>
       <h3>System Users</h3>
-      <div className="table-wrapper">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Username</th>
-              <th>Password</th>
-              <th>User Role</th>
-            </tr>
-          </thead>
-          <tbody className="table-horizontal">
-            {userList?.map((user) => {
-              return (
-                <tr key={user.id} onClick={() => handleView(user)}>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.password}</td>
-                  <td>{user.type}</td>
-                </tr>
-              )
-            }
-            )}
-          </tbody>
-        </table>
+      <div>
+        <div className="table-wrapper">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>User Role</th>
+              </tr>
+            </thead>
+            <tbody className="table-horizontal">
+              {userList?.map((user) => {
+                return (
+                  <tr key={user.id} onClick={() => handleView(user)}>
+                    <td>{user.id}</td>
+                    <td>{user.username}</td>
+                    <td>{user.password}</td>
+                    <td>{user.type}</td>
+                  </tr>
+                )
+              }
+              )}
+            </tbody>
+          </table>
+        </div>
+        <button className="btn btn-success">Add new Admin</button>
       </div>
-      
       <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} loadUsers={loadUsers} />
     </>
   )

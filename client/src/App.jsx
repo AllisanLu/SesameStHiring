@@ -20,7 +20,8 @@ import ManagerList from './components/admin/ManagerList.jsx';
 import ManagerView from './components/manager/ManagerView.jsx';
 import CandidateView from './components/candidate/CandidateView.jsx';
 
-import { getUser, getUsers, getCandidates, getManagers, getManager, getCandidate } from './database.js'
+import { getUser, getUsers, getCandidates, 
+        getManagers, getManager, getCandidate, getJobs } from './database.js'
 
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
   const [users, setUsers] = useState([]);
   const [managers, setManagers] = useState([]);
 
+  const [jobs, setJobs] = useState([]);
+
   const testAdmin = {
     id: 10,
     username: "Admin",
@@ -37,20 +40,6 @@ function App() {
     type: "admin"
   }
 
-  const testJobs = [
-    {
-      title: "CS",
-      description: "writing code",
-      manager: 5,
-      id: 1
-    },
-    {
-      title: "HR",
-      description: "hiring people",
-      manager: 1,
-      id: 2
-    }
-  ];
   const testApps = [
     {
       id: 1,
@@ -76,12 +65,10 @@ function App() {
 
   const loadPage = async function () {
     await loadUser();
-
-    // if (currentUser?.type === "manager") {
-    await loadCandidates()
-    // }
+    await loadCandidates();
     await loadUsers();
     await loadManagers();
+    await loadJobs();
   }
 
   const loadUser = () => {
@@ -117,6 +104,10 @@ function App() {
     getManagers().then(res => setManagers(res));
   }
 
+  const loadJobs = () => {
+    getJobs().then(res => setJobs(res));
+  }
+
   useEffect(() => {
     loadPage();
   }, [])
@@ -130,20 +121,20 @@ function App() {
 
           {currentUser.type === "candidate" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<CandidateView user={currentUser} setUser={setCurrentUser} />}></Route>
-            <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
+            <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} />}></Route>
             <Route path="applications" element={<ApplicationList apps={testApps} />} ></Route>
           </Route> : null }
 
           <Route path="admin" element={<AdminPage user={testAdmin} />} >
             <Route path="users" element={<UserList users={users} loadUsers={loadUsers} />} />
             <Route path="candidates" element={<CandidateList user={testAdmin} candidates={candidates} loadCandidates={loadCandidates} />} />
-            <Route path="joblistings" element={<JobList user={testAdmin} jobs={testJobs} />} />
+            <Route path="joblistings" element={<JobList user={testAdmin} jobs={jobs} loadJobs={loadJobs}/>} />
             <Route path="managers" element={<ManagerList managers={managers} loadManagers={loadManagers} />} />
           </Route>
 
           {currentUser.type === "manager" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<ManagerView user={currentUser} setUser={setCurrentUser} />}></Route>
-            <Route path="joblistings" element={<JobList user={currentUser} jobs={testJobs} />}></Route>
+            <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} />}></Route>
             <Route path="candidates" element={<CandidateList user={currentUser} candidates={candidates} loadCandidates={loadCandidates} />} ></Route>
           </Route> : null }
 
