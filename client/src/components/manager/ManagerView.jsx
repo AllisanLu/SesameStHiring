@@ -33,7 +33,7 @@ function ManagerView({ user, setUser }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} >
+        <form className="small-form" onSubmit={handleSubmit} >
             <h3>{user?.fullName ? "Update" : "Create"} your manager profile</h3>
             <div className="mb-3 form-group">
                 <label htmlFor="fullName">Name</label>

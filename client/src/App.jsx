@@ -106,7 +106,6 @@ function App() {
   }
 
   const loadUsers = () => {
-    console.log("loading users")
     getUsers()
       .then(users => setUsers(users))
   }

@@ -6,7 +6,7 @@ function UserList({ users, loadUsers }) {
   const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
-    if (users) setUserList(users) 
+    if (users) setUserList(users)
   }, [users])
 
   const handleView = (user) => {
@@ -19,7 +19,6 @@ function UserList({ users, loadUsers }) {
 
   return (
     <>
-      {/* Could sort candidates by the job they applied for */}
       <h3>System Users</h3>
       <div className="table-wrapper">
         <table className="table table-striped">
@@ -46,6 +45,7 @@ function UserList({ users, loadUsers }) {
           </tbody>
         </table>
       </div>
+      
       <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} loadUsers={loadUsers} />
     </>
   )
