@@ -1,5 +1,9 @@
 // for doing API calls :D
+import { toast } from "react-toastify";
+
 // LOGIN
+
+let authToken = "";
 
 async function login(userInfo, setToken) {
     const user = await fetch("http://localhost:8080/api/login", {
@@ -7,19 +11,22 @@ async function login(userInfo, setToken) {
         method: "POST",
     })
     .then(response => {
-        const token = response.headers.get("Authorization");
-        console.log({token})
     if (response.ok) {
             //get token from header
-            setToken(token)
+            //setToken(token)
+            const token = response.headers.get("Authorization");
+            authToken = token;
             return response.json();
         } else {
-            return response.error
+            toast.error("Failed to Login !")
         }
     })
 
-    console.log(user);
     return user
+}
+
+function logout(){
+    authToken = "";
 }
 
 async function register(userInfo, setToken) {
@@ -32,11 +39,11 @@ async function register(userInfo, setToken) {
         if (response.ok) {
             //get token from header
             const token = response.headers.get('Authorization');
-            console.log(token)
-            setToken(token)
+            authToken = token;
+            //setToken(token)
             return response.json();
         } else {
-            return response.error
+            toast.error("Failed to register !")
         }
     })
 
@@ -47,7 +54,8 @@ async function register(userInfo, setToken) {
 
 async function getUsers(token) {
     const newUsers = await fetch("http://localhost:8080/api/users", {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken },
+        method: "GET"
     })
     .then(response => response.json())
     return newUsers;
@@ -55,14 +63,14 @@ async function getUsers(token) {
 
 async function getUser(id, token) {
     return fetch(`http://localhost:8080/api/users/${id}`, {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function updateUser(id, user, token) {
     fetch(`http://localhost:8080/api/users/${id}`, {
-        headers: { "Content-Type": "application/json", "Authorization": token },
+        headers: { "Content-Type": "application/json", "Authorization": authToken },
         method: "PUT",
         body: JSON.stringify(user)
     })
@@ -71,7 +79,7 @@ async function updateUser(id, user, token) {
 
 async function createUser(user, token) {
     return fetch("http://localhost:8080/api/users", {
-        headers: { "Content-Type": "application/json", "Authorization": token },
+        headers: { "Content-Type": "application/json", "Authorization": authToken },
         method: "POST",
         body: JSON.stringify(user)
     })
@@ -83,14 +91,14 @@ async function createUser(user, token) {
 
 async function getCandidates(token) {
     return fetch("http://localhost:8080/api/candidates", {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function getCandidate(id, token) {
     return fetch(`http://localhost:8080/api/candidates/${id}`, {
-        headers: { "Authorization": token }
+        headers: { "Authorization":  authToken }
     })
     .then(response => { 
         if (response.ok)
@@ -101,7 +109,7 @@ async function getCandidate(id, token) {
 
 async function createCandidate(id, candidate, token) {
     return fetch("http://localhost:8080/api/candidates", {
-        headers: { "Content-Type": "application/json", "Authorization": token },
+        headers: { "Content-Type": "application/json", "Authorization": authToken },
         method: "POST",
         body: JSON.stringify({...candidate, id})
     }).then(res => res.json());
@@ -109,7 +117,7 @@ async function createCandidate(id, candidate, token) {
 
 async function updateCandidate(id, candidate, token) {
     return fetch(`http://localhost:8080/api/candidates/${id}`, {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "PUT",
         body: JSON.stringify({...candidate, id})
     }).then(res => res.json());
@@ -117,7 +125,7 @@ async function updateCandidate(id, candidate, token) {
 
 async function deleteCandidate(id, token) {
     return fetch(`http://localhost:8080/api/candidates/${id}`, {
-        headers: { "Authorization": token },
+        headers: { "Authorization": authToken },
         method: "DELETE"
     }).then(res => res.json());
 }
@@ -126,14 +134,14 @@ async function deleteCandidate(id, token) {
 
 async function getManagers(token) {
     return fetch("http://localhost:8080/api/managers", {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function getManager(id, token) {
     return fetch(`http://localhost:8080/api/managers/${id}`, {
-        header: { "Authorization": token }
+        header: { "Authorization": authToken }
     })
     .then(response => { 
         if (response.ok)
@@ -144,7 +152,7 @@ async function getManager(id, token) {
 
 async function createManager(id, manager, token) {
     return fetch("http://localhost:8080/api/managers", {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "POST",
         body: JSON.stringify({...manager, id})
     }).then(res => res.json());
@@ -152,7 +160,7 @@ async function createManager(id, manager, token) {
 
 async function updateManager(id, manager, token) {
     return fetch(`http://localhost:8080/api/managers/${id}`, {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "PUT",
         body: JSON.stringify({...manager, id})
     }).then(res => res.json());
@@ -162,21 +170,21 @@ async function updateManager(id, manager, token) {
 
 async function getJobs(token) {
     return fetch("http://localhost:8080/api/jobs", {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function getJob(id, token) {
     return fetch(`http://localhost:8080/api/jobs/${id}`, {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function createJob(job, token) {
     return fetch("http://localhost:8080/api/jobs", {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "POST",
         body: JSON.stringify(job)
     }).then(res => res.json());
@@ -184,14 +192,14 @@ async function createJob(job, token) {
 
 async function getManagerJobs(managerid, token) {
     return fetch(`http://localhost:8080/api/jobs/manager/${managerid}`, {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function updateJob(id, job, token) {
     return fetch(`http://localhost:8080/api/jobs/${id}`, {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "PUT",
         body: JSON.stringify(job)
     }).then(res => res.json());
@@ -199,7 +207,7 @@ async function updateJob(id, job, token) {
 
 async function deleteJob(id, token) {
     return fetch(`http://localhost:8080/api/jobs/${id}`, {
-        headers: { "Authorization": token },
+        headers: { "Authorization": authToken },
         method: "DELETE"
     });
 }
@@ -208,21 +216,28 @@ async function deleteJob(id, token) {
 
 async function getApplications(token) {
     return fetch("http://localhost:8080/api/applications", {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function getApplicationsByJob(id, token) {
     return fetch(`http://localhost:8080/api/applications/job/${id}`, {
-        headers: { "Authorization": token }
+        headers: { "Authorization": authToken }
+    })
+    .then(response => response.json())
+}
+
+async function getApplicationsByManager(id) {
+    return fetch(`http://localhost:8080/api/applications/manager/${id}`, {
+        headers: { "Authorization": authToken }
     })
     .then(response => response.json())
 }
 
 async function createApplication(app, token) {
     return fetch("http://localhost:8080/api/applications", {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "POST",
         body: JSON.stringify(app)
     }).then(res => res.json());
@@ -230,7 +245,7 @@ async function createApplication(app, token) {
 
 async function updateApplication(id, app, token) {
     return fetch(`http://localhost:8080/api/applications/${id}`, {
-        headers: { "Content-Type": "application/json", "Authorization": token},
+        headers: { "Content-Type": "application/json", "Authorization": authToken},
         method: "PUT",
         body: JSON.stringify(app)
     }).then(res => res.json());
@@ -238,13 +253,14 @@ async function updateApplication(id, app, token) {
 
 async function deleteApplication(id, token) {
     return fetch(`http://localhost:8080/api/applications/${id}`, {
-        headers: { "Authorization": token },
+        headers: { "Authorization": authToken },
         method: "DELETE"
     });
 }
 
 export {
     login,
+    logout,
     register,
     getUsers,
     getUser,
@@ -267,6 +283,7 @@ export {
     deleteJob,
     getApplications,
     getApplicationsByJob,
+    getApplicationsByManager,
     createApplication,
     deleteApplication,
     updateApplication

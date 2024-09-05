@@ -6,6 +6,10 @@ function UserList({ users, loadUsers, token }) {
   const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
+    setUsersClean(users);
+  }, [users])
+
+  const setUsersClean = (users) => {
     if (users) {
       const cleanedRoles = users.map((user) => {
         if (user.type == "ROLE_ADMIN") {
@@ -26,9 +30,8 @@ function UserList({ users, loadUsers, token }) {
         }
       })
       setUserList(cleanedRoles)
-      // setUserList(users)
     }
-  }, [users])
+  }
 
   const handleView = (user) => {
     if (user.id === selectedUser?.id) {
@@ -50,7 +53,7 @@ function UserList({ users, loadUsers, token }) {
       }) ;
       setUserList(filteredList);
     } else {
-      setUserList(users);
+      setUsersClean(users);
     }
   }
 

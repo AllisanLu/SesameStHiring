@@ -15,9 +15,9 @@ const RegisterPage = ({setToken, loadUser, loadPage }) => {
         await loadUser(user.id);
         await loadPage();
 
-        if (response.type === "ROLE_CANDIDATE") {
+        if (user.type === "ROLE_CANDIDATE") {
             navigate("/candidate");
-        } else if (response.type === "ROLE_MANAGER") {
+        } else if (user.type === "ROLE_MANAGER") {
             navigate("/manager");
         }
 

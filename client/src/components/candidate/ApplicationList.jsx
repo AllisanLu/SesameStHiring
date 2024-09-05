@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 
 import Application from "./Application";
+import { getApplicationsByManager } from "../../database";
 
 function ApplicationList({ user, apps, loadApplications, loadJobs, token }) {
 
@@ -9,17 +11,25 @@ function ApplicationList({ user, apps, loadApplications, loadJobs, token }) {
 
 
   useEffect(() => {
+    filterApps(apps).then(res => {
+      setApplications(res)
+    })
+  }, [apps])
+
+  const filterApps = async (apps) => {
     if (apps) {
-      if (user.type === "manager") {
-        const filtered = app.filter((app => {
-          return app.applicationStatus !== "Rejected"
-        }))
-        setApplications(filtered)
+      if (user?.type == "ROLE_MANAGER") {
+        return await getApplicationsByManager(user.id);
+      } else if (user.type == "ROLE_CANDIDATE") {
+        const filteredApps = apps.filter((app) => {
+          return app.userId === user?.id;
+        })
+        return filteredApps
       } else {
-        setApplications(apps)
+        return apps
       }
     }
-  }, [apps])
+  }
 
   const handleSelect = (application) => {
     if (application.id === selectedApp?.id) {
@@ -33,10 +43,12 @@ function ApplicationList({ user, apps, loadApplications, loadJobs, token }) {
     if (e.target.value) {
       const filteredList = applications?.filter((application) => {
         return ("" + application.id).includes(e.target.value) || ("" + application.jobId).includes(e.target.value)
-      }) ;
+      });
       setApplications(filteredList);
     } else {
-      setApplications(apps);
+      filterApps(apps).then(res => {
+        setApplications(res)
+      })
     }
   }
 

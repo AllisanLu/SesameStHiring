@@ -6,7 +6,7 @@ import CandidatePage from './pages/CandidatePage';
 import AdminPage from './pages/AdminPage.jsx';
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -37,13 +37,6 @@ function App() {
 
   const [jobs, setJobs] = useState([]);
 
-  const testAdmin = {
-    id: 10,
-    username: "Admin",
-    password: "admin",
-    type: "admin"
-  }
-
   const loadPage = async function () {
     if (currentUser) {
       if (currentUser.type != "ROLE_CANDIDATE") {
@@ -62,7 +55,7 @@ function App() {
   const loadUser = (i) => {
     getUser(i, authToken).then(user => {
       if (user.type === "ROLE_CANDIDATE") {
-        getCandidate(user.id).then(candidate => {
+        getCandidate(user.id, authToken).then(candidate => {
           if (candidate) {
             setCurrentUser(candidate)
             return
@@ -102,7 +95,6 @@ function App() {
 
   return (
     <>
-    <pre>{JSON.stringify(authToken)}</pre>
       <Router>
         <Routes>
           <Route exact path="/" element={<LoginPage setToken={setAuthToken} loadUser={loadUser} loadPage={loadPage} />} />
@@ -114,18 +106,18 @@ function App() {
             <Route path="applications" element={<ApplicationList user={currentUser} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs} token={authToken} />} ></Route>
           </Route> : null }
 
-          {currentUser?.type === "ROLE_CANDIDATE" ? <Route path="admin" element={<AdminPage user={testAdmin} />} >
+          {currentUser?.type === "ROLE_ADMIN" ? <Route path="admin" element={<AdminPage user={currentUser} />} >
             <Route path="users" element={<UserList users={users} loadUsers={loadUsers} token={authToken} />} />
-            <Route path="candidates" element={<CandidateList user={testAdmin} candidates={candidates} loadCandidates={loadCandidates} token={authToken} />} />
-            <Route path="joblistings" element={<JobList user={testAdmin} jobs={jobs} loadJobs={loadJobs} token={authToken} />} />
+            <Route path="candidates" element={<CandidateList user={currentUser} candidates={candidates} loadCandidates={loadCandidates} token={authToken} />} />
+            <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} token={authToken} />} />
             <Route path="managers" element={<ManagerList managers={managers} loadManagers={loadManagers} token={authToken} />} />
-            <Route path="applications" element={<ApplicationList user={testAdmin} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs} token={authToken} />} />
+            <Route path="applications" element={<ApplicationList user={currentUser} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs} token={authToken} />} />
           </Route> : null }
 
           {currentUser?.type === "ROLE_MANAGER" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} token={authToken} />} >
             <Route path="" element={<ManagerView user={currentUser} setUser={setCurrentUser} token={authToken} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} token={authToken} />}></Route>
-            <Route path="applications" element={<ApplicationList auser={currentUser} upps={applications} loadApplications={loadApplications} token={authToken} />} ></Route>
+            <Route path="applications" element={<ApplicationList user={currentUser} apps={applications} loadApplications={loadApplications} token={authToken} />} ></Route>
             <Route path="candidates" element={<CandidateList user={currentUser} candidates={candidates} loadCandidates={loadCandidates} token={authToken} />} ></Route>
           </Route> : null }
 

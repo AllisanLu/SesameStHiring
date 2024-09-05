@@ -92,7 +92,7 @@ function ManagerView({ user, setUser, token }) {
             </div>
             <div className="">
                 <button className="btn btn-warning" type="submit">
-                    {manager?.fullName ? "Update" : "Create"}
+                    {user?.fullName ? "Update" : "Create"}
                 </button>
             </div>
         </form>

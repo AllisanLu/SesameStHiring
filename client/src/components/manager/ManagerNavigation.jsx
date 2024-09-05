@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
-
+import { logout } from "../../database"
 import "../Navigation.css"
 
 function ManagerNavigation() {
+
   return (
     <div className="Navigation">
       <nav>
@@ -18,7 +19,7 @@ function ManagerNavigation() {
             </div>
           </div>
           <Link to="candidates">View Candidates</Link>
-          <Link to="/">Logout</Link>
+          <Link to="/" onClick={logout}>Logout</Link>
         </div>
       </nav>
     </div>
