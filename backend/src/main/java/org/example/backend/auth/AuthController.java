@@ -39,6 +39,7 @@ public class AuthController {
         String token = tokenService.generateToken(authentication);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
+        headers.add("Access-Control-Expose-Headers", "Authorization");
 
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
@@ -60,6 +61,7 @@ public class AuthController {
         String token = tokenService.generateToken(authentication);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
+        headers.add("Access-Control-Expose-Headers", "Authorization");
 
         return new ResponseEntity<>(createdUser, headers, HttpStatus.OK);
     }
