@@ -55,4 +55,10 @@ public class UserServiceImpl implements UserService {
         return false;
 
     }
+
+    @Override
+    public User getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.orElse(null);
+    }
 }
