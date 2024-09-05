@@ -12,8 +12,6 @@ async function login(userInfo, setToken) {
     })
     .then(response => {
     if (response.ok) {
-            //get token from header
-            //setToken(token)
             const token = response.headers.get("Authorization");
             authToken = token;
             return response.json();

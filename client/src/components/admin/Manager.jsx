@@ -11,12 +11,12 @@ function Manager({ selectedManager, setSelectedManager, loadManagers, token }) {
         else setManager();
     }, [selectedManager]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        updateManager(manager.id, manager, token).then(res => {
+        await updateManager(manager.id, manager, token).then(async(res) => {
             setManager();
             setSelectedManager();
-            loadManagers();
+            await loadManagers();
 
             toast.success("Successfully updated !");
         })

@@ -4,12 +4,13 @@ import Footer from "../components/Footer"
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-function AdminPage({ user, token }) {
+function AdminPage({ user }) {
+  
   const [admin, setAdmin] = useState(user)
 
   useEffect(() => {
     if (user) {
-      setAdmin(admin)
+      setAdmin(user)
     }
   }, [user])
 

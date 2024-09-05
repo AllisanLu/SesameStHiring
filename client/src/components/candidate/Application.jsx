@@ -48,20 +48,20 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
     await updateJob(job.id, completedJob, token);
     await loadApplications();
     await loadJobs();
-    await setApp();
-    await setSelectedApp();
+    setApp();
+    setSelectedApp();
 
     toast.success("Successfully hired !");
   }
 
-  const handleReject = () => {
+  const handleReject = async() => {
     const rejectedApp = {
       ...app,
       applicationStatus: "Rejected"
     }
 
-    updateApplication(app.id, rejectedApp, token).then(res => {
-      loadApplications();
+    await updateApplication(app.id, rejectedApp, token).then(async(res) => {
+      await loadApplications();
       setApp();
       setSelectedApp();
     })
@@ -71,8 +71,8 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
 
   const handleDelete = async () => {
     //api call to delete id
-    deleteApplication(app.id, token).then(res => {
-      loadApplications();
+    await deleteApplication(app.id, token).then(async(res) => {
+      await loadApplications();
       setApp();
       setSelectedApp();
     })

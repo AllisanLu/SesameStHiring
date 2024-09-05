@@ -12,7 +12,7 @@ function User({ selectedUser, setSelectedUser, loadUsers, token }) {
         else setUser();
     }, [selectedUser]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
 
         let fixedUser = user;
@@ -35,10 +35,10 @@ function User({ selectedUser, setSelectedUser, loadUsers, token }) {
                 }
               }
 
-            updateUser(fixedUser.id, fixedUser, token).then(res => {
+            await updateUser(fixedUser.id, fixedUser, token).then(async(res) => {
                 setUser();
                 setSelectedUser();
-                loadUsers();
+                await loadUsers();
                 toast.success("Successfully updated !");
             })
         } else {
@@ -46,10 +46,10 @@ function User({ selectedUser, setSelectedUser, loadUsers, token }) {
                 ...user,
                 type: "ROLE_ADMIN"
             }
-            createUser(adminUser, token).then(res => {
+            await createUser(adminUser, token).then(async(res) => {
                 setUser();
                 setSelectedUser();
-                loadUsers();
+                await loadUsers();
                 toast.success("Successfully created !");
             })
         }

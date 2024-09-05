@@ -40,7 +40,7 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete, to
 
         setSelectedJob();
         setJob();
-        loadJobs();
+        await loadJobs();
 
         toast.success("Successfully updated !");
     }
