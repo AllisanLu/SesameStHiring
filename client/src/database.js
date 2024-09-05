@@ -188,7 +188,7 @@ async function getManagerJobs(managerid) {
 
 async function updateJob(id, job) {
     return fetch(`http://localhost:8080/api/jobs/${id}`, {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "PUT",
         body: JSON.stringify(job)
     }).then(res => res.json());
@@ -196,6 +196,7 @@ async function updateJob(id, job) {
 
 async function deleteJob(id) {
     return fetch(`http://localhost:8080/api/jobs/${id}`, {
+        headers: { "Authorization": token },
         method: "DELETE"
     });
 }
@@ -203,18 +204,22 @@ async function deleteJob(id) {
 // APPLICATIONS
 
 async function getApplications() {
-    return fetch("http://localhost:8080/api/applications")
+    return fetch("http://localhost:8080/api/applications", {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function getApplicationsByJob(id) {
-    return fetch(`http://localhost:8080/api/applications/job/${id}`)
+    return fetch(`http://localhost:8080/api/applications/job/${id}`, {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function createApplication(app) {
     return fetch("http://localhost:8080/api/applications", {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "POST",
         body: JSON.stringify(app)
     }).then(res => res.json());
@@ -222,7 +227,7 @@ async function createApplication(app) {
 
 async function updateApplication(id, app) {
     return fetch(`http://localhost:8080/api/applications/${id}`, {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "PUT",
         body: JSON.stringify(app)
     }).then(res => res.json());
@@ -230,6 +235,7 @@ async function updateApplication(id, app) {
 
 async function deleteApplication(id) {
     return fetch(`http://localhost:8080/api/applications/${id}`, {
+        headers: { "Authorization": token },
         method: "DELETE"
     });
 }
