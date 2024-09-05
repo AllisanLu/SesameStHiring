@@ -9,4 +9,7 @@ import java.util.List;
 public interface JobRepository extends JpaRepository<Job, Integer> {
 
     List<Job> findJobsByManager_Id(int managerId);
+
+    //TODO Fix the foreign key dependency issues in all tables
+    void deleteAllByManager_Id(int managerId);
 }

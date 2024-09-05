@@ -11,4 +11,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     List<Application> findApplicationsByJob_Id(int id);
 
     List<Application> findApplicationsByJob_Manager_Id(int id);
+
+    void deleteAllByJob_Id(int id);
+
 }
