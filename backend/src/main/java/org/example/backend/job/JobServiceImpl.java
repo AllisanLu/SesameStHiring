@@ -1,5 +1,7 @@
 package org.example.backend.job;
 
+import jakarta.transaction.Transactional;
+import org.example.backend.application.ApplicationRepository;
 import org.example.backend.job.dto.JobDto;
 import org.example.backend.manager.Manager;
 import org.example.backend.manager.ManagerRepository;
@@ -13,13 +15,15 @@ import java.util.Optional;
 @Service
 public class JobServiceImpl implements JobService {
 
-    JobRepository jobRepository;
-    ManagerRepository managerRepository;
+    private final ApplicationRepository applicationRepository;
+    private final JobRepository jobRepository;
+    private final ManagerRepository managerRepository;
 
     @Autowired
-    public JobServiceImpl(JobRepository jobRepository, ManagerRepository managerRepository) {
+    public JobServiceImpl(JobRepository jobRepository, ManagerRepository managerRepository, ApplicationRepository applicationRepository) {
         this.jobRepository = jobRepository;
         this.managerRepository = managerRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     @Override
@@ -103,8 +107,10 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @Transactional
     public boolean deleteJob(int id) {
         if (jobRepository.existsById(id)) {
+            applicationRepository.deleteAllByJob_Id(id);
             jobRepository.deleteById(id);
             return true;
         }
