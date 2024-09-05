@@ -18,6 +18,7 @@ public class ManagerController {
     }
 
     @GetMapping
+
     public ResponseEntity<List<Manager>> getAllManagers() {
         List<Manager> managers = managerService.getAllManagers();
         return ResponseEntity.ok(managers);
