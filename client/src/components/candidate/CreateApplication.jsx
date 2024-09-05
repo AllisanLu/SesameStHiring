@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { createApplication } from "../../database";
 import { toast } from "react-toastify";
 
-function CreateApplication({ user, job, applying, setApplying, loadApplications }) {
+function CreateApplication({ user, job, applying, setApplying, loadApplications, token }) {
     const [creating, setCreating] = useState(false);
     const [applyingUser, setApplyingUser] = useState(user);
     const [applyingJob, setApplyingJob] = useState(job);
@@ -32,7 +32,7 @@ function CreateApplication({ user, job, applying, setApplying, loadApplications 
             dateApplied: new Date(),
             applicationStatus: "Pending"
         }
-        await createApplication(fullapp);
+        await createApplication(fullapp, token);
         loadApplications();
         setCreating(false);
         setApplying(false);

@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import "./portal.css"
 import CandidateView from "../components/candidate/CandidateView";
 
-function CandidatePage({ user, setUser }) {
+function CandidatePage({ user, setUser, token }) {
 
   const [candidate, setCandidate] = useState(user);
 
@@ -21,7 +21,7 @@ function CandidatePage({ user, setUser }) {
       <div className="Page">
         <CandidateNavigation></CandidateNavigation>
         <h1>Welcome Candidate {user?.username}!</h1>
-        {user.fullName ? (<Outlet />) : <CandidateView user={user} setUser={setUser} />}
+        {user.fullName ? (<Outlet />) : <CandidateView user={candidate} setUser={setUser} token={token}/>}
         <img id="welcomeImg" src="https://wallpapers.com/images/hd/cute-cartoon-sesame-street-characters-1841n41pmobi9iqy.jpg" alt="characters" />
       </div>
       <Footer></Footer>

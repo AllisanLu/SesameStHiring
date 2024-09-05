@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { updateManager } from "../../database";
 import { toast } from "react-toastify";
 
-function Manager({ selectedManager, setSelectedManager, loadManagers }) {
+function Manager({ selectedManager, setSelectedManager, loadManagers, token }) {
 
     const [manager, setManager] = useState(selectedManager);
 
@@ -13,7 +13,7 @@ function Manager({ selectedManager, setSelectedManager, loadManagers }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateManager(manager.id, manager).then(res => {
+        updateManager(manager.id, manager, token).then(res => {
             setManager();
             setSelectedManager();
             loadManagers();

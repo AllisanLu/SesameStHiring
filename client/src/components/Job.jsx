@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getManager } from "../database";
 
-function Job({ selectedJob, setSelectedJob, handleApply }) {
+function Job({ selectedJob, setSelectedJob, handleApply, token }) {
 
   const [job, setJob] = useState(selectedJob);
   const [manager, setManager] = useState();
@@ -9,7 +9,7 @@ function Job({ selectedJob, setSelectedJob, handleApply }) {
   useEffect(() => {
     if (selectedJob) {
       setJob(selectedJob);
-      getManager(selectedJob.managerId).then(res => {
+      getManager(selectedJob.managerId, token).then(res => {
         setManager(res)
       })
     }

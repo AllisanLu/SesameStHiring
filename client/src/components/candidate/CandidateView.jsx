@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { createCandidate, updateUser, updateCandidate, getCandidate } from "../../database";
+import { createCandidate, updateCandidate, getCandidate } from "../../database";
 import { toast } from "react-toastify";
 
-function CandidateView({ user, setUser }) {
+function CandidateView({ user, setUser, token }) {
     const [candidate, setCandidate] = useState(user);
 
     useEffect(()=> {
@@ -14,14 +14,13 @@ function CandidateView({ user, setUser }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const check = await getCandidate(user.id);
+        const check = await getCandidate(user.id, token);
 
         let res = null;
         if (!check) {
-            await updateUser(user.id, {...user, type: "ROLE_CANDIDATE"});
-            res = await createCandidate(user.id, candidate);
+            res = await createCandidate(user.id, candidate, token);
         } else {
-            res = await updateCandidate(user.id, candidate);
+            res = await updateCandidate(user.id, candidate, token);
         }
         setUser(res);
 

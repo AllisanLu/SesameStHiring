@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Manager from "./Manager";
 
-function ManagerList({ managers, loadManagers }) {
+function ManagerList({ managers, loadManagers, token }) {
   const [managerList, setManagerList] = useState(managers)
   const [selectedManager, setSelectedManager] = useState();
 
@@ -61,7 +61,7 @@ function ManagerList({ managers, loadManagers }) {
           </tbody>
         </table>
       </div>
-      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager} loadManagers={loadManagers} />
+      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager} loadManagers={loadManagers} token={token} />
     </>
   )
 }

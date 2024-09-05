@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Application from "./Application";
 
-function ApplicationList({ user, apps, loadApplications, loadJobs }) {
+function ApplicationList({ user, apps, loadApplications, loadJobs, token }) {
 
   const [applications, setApplications] = useState(apps)
   const [selectedApp, setSelectedApp] = useState()
@@ -72,7 +72,7 @@ function ApplicationList({ user, apps, loadApplications, loadJobs }) {
           </tbody>
         </table>
       </div>
-      <Application user={user} selectedApp={selectedApp} setSelectedApp={setSelectedApp} loadApplications={loadApplications} loadJobs={loadJobs} />
+      <Application user={user} selectedApp={selectedApp} setSelectedApp={setSelectedApp} loadApplications={loadApplications} loadJobs={loadJobs} token={token} />
     </>
   )
 }

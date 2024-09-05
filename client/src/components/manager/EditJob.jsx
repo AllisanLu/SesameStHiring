@@ -3,7 +3,7 @@ import { createJob, updateJob } from "../../database";
 import { toast } from "react-toastify"
 
 
-function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) {
+function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete, token }) {
 
     const [job, setJob] = useState(selectedJob);
 
@@ -27,7 +27,7 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (job.id) {
-            await updateJob(job.id, job);
+            await updateJob(job.id, job, token);
         } else {
             const fulljob = {
                 ...job,

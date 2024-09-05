@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import User from "./User";
 
-function UserList({ users, loadUsers }) {
+function UserList({ users, loadUsers, token }) {
   const [userList, setUserList] = useState()
   const [selectedUser, setSelectedUser] = useState();
 
@@ -89,7 +89,7 @@ function UserList({ users, loadUsers }) {
           </table>
         </div>
       </div>
-      <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} loadUsers={loadUsers} />
+      <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} loadUsers={loadUsers} token={token} />
     </>
   )
 }

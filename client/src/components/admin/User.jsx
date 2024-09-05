@@ -3,7 +3,7 @@ import { createUser, updateUser } from "../../database";
 import { toast } from "react-toastify";
 import "../Modal.css"
 
-function User({ selectedUser, setSelectedUser, loadUsers }) {
+function User({ selectedUser, setSelectedUser, loadUsers, token }) {
 
     const [user, setUser] = useState(selectedUser);
 
@@ -35,7 +35,7 @@ function User({ selectedUser, setSelectedUser, loadUsers }) {
                 }
               }
 
-            updateUser(fixedUser.id, fixedUser).then(res => {
+            updateUser(fixedUser.id, fixedUser, token).then(res => {
                 setUser();
                 setSelectedUser();
                 loadUsers();
@@ -46,7 +46,7 @@ function User({ selectedUser, setSelectedUser, loadUsers }) {
                 ...user,
                 type: "ROLE_ADMIN"
             }
-            createUser(adminUser).then(res => {
+            createUser(adminUser, token).then(res => {
                 setUser();
                 setSelectedUser();
                 loadUsers();

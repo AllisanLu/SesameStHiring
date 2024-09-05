@@ -3,7 +3,7 @@ import { updateCandidate } from "../../database";
 import { toast } from "react-toastify";
 
 
-const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate }) => {
+const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate, token }) => {
     const [candidate, setCandidate] = useState(selectedCandidate);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await updateCandidate(candidate.id, candidate)
+        await updateCandidate(candidate.id, candidate, token)
         await loadCandidates();
         setSelectedCandidate();
 

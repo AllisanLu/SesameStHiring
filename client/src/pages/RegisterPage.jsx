@@ -1,25 +1,25 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { register, createUser } from '../database.js'
+import { register } from '../database.js'
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const RegisterPage = ({setCurrentUser}) => {
+const RegisterPage = ({setToken, loadUser, loadPage }) => {
     const [newUser, setNewUser] = useState({});
     let navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await createUser(newUser);
-        setCurrentUser(response);
+        const user = await register(newUser, setToken);
 
-        navigate("/");
+        await loadUser(user.id);
+        await loadPage();
 
-        // if (response.type === "ROLE_CANDIDATE") {
-        //     navigate("/candidate");
-        // } else if (response.type === "ROLE_MANAGER") {
-        //     navigate("/manager");
-        // }
+        if (response.type === "ROLE_CANDIDATE") {
+            navigate("/candidate");
+        } else if (response.type === "ROLE_MANAGER") {
+            navigate("/manager");
+        }
 
         setNewUser({ username: "", password: "" });
         toast.success("Successfully created !");

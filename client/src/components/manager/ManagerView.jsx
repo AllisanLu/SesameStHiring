@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { createManager, updateUser, updateManager, getManager } from "../../database";
+import { createManager, updateManager, getManager } from "../../database";
 import { toast } from "react-toastify";
 
-function ManagerView({ user, setUser }) {
+function ManagerView({ user, setUser, token }) {
     const [manager, setManager] = useState(user)
 
     useEffect(()=> {
@@ -14,14 +14,13 @@ function ManagerView({ user, setUser }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // set new candidate and reload the page
-        const check = await getManager(user.id);
+        const check = await getManager(user.id, token);
 
         let res = null;
         if (!check) {
-            await updateUser(user.id, {...user, type: "ROLE_MANAGER"});
-            res = await createManager(user.id, manager);
+            res = await createManager(user.id, manager, token);
         } else {
-            res = await updateManager(user.id, manager);
+            res = await updateManager(user.id, manager, token);
         }
         setUser(res);
 

@@ -1,15 +1,16 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
 import { login } from '../database'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-function LoginForm({ loadUser, loadPage }) {
+function LoginForm({ setToken, loadUser, loadPage }) {
   const [userInfo, setUserInfo] = useState({})
   let navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const user = await login(userInfo);
+    const user = await login(userInfo, setToken);
 
     if (user.id) {
       await loadUser(user.id);

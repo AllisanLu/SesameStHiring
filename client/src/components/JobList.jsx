@@ -5,7 +5,7 @@ import Job from "./Job";
 import EditJob from "./manager/EditJob"
 import CreateApplication from "./candidate/CreateApplication";
 
-function JobList({ user, jobs, loadJobs, loadApplications }) {
+function JobList({ user, jobs, loadJobs, loadApplications, token }) {
   const [creating, setCreating] = useState(false);
   const [viewableJobs, setViewableJobs] = useState(jobs)
   const [selectedJob, setSelectedJob] = useState();
@@ -21,7 +21,7 @@ function JobList({ user, jobs, loadJobs, loadApplications }) {
 
   const filterJobs = async (jobs) => {
     if (user?.type === "ROLE_MANAGER") {
-      return await getManagerJobs(user.id);
+      return await getManagerJobs(user.id, token);
     }
     if (jobs) {
       if (user?.type === "ROLE_CANDIDATE") {
@@ -43,7 +43,7 @@ function JobList({ user, jobs, loadJobs, loadApplications }) {
 
   const handleDelete = async (job) => {
     const id = job.id;
-    await deleteJob(id);
+    await deleteJob(id, token);
     await setSelectedJob();
     await loadJobs();
   }

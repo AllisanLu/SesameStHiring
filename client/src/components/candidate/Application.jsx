@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { updateJob, updateApplication, deleteApplication, getCandidate, getJob, getApplicationsByJob } from "../../database";
 import { toast } from "react-toastify";
 
-function Application({ user, selectedApp, setSelectedApp, loadApplications, loadJobs }) {
+function Application({ user, selectedApp, setSelectedApp, loadApplications, loadJobs, token }) {
   const [app, setApp] = useState(selectedApp);
   const [candidate, setCandidate] = useState();
   const [job, setJob] = useState();
@@ -11,8 +11,8 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
   useEffect(() => {
     if (selectedApp) {
       setApp(selectedApp);
-      getCandidate(selectedApp.userId).then(res => setCandidate(res));
-      getJob(selectedApp.jobId).then(res => setJob(res));
+      getCandidate(selectedApp.userId, token).then(res => setCandidate(res));
+      getJob(selectedApp.jobId, token).then(res => setJob(res));
     }
     else {
       setApp();
@@ -29,14 +29,14 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
       ...app,
       applicationStatus: "Accepted"
     }
-    await updateApplication(app.id, acceptedApp)
+    await updateApplication(app.id, acceptedApp, token)
 
-    const jobApplications = await getApplicationsByJob(job.id);
+    const jobApplications = await getApplicationsByJob(job.id, token);
     console.log(jobApplications)
 
     for (let jobApp of jobApplications) {
       if (jobApp.id !== app.id) {
-        await deleteApplication(jobApp.id);
+        await deleteApplication(jobApp.id, token);
       }
     }
 
@@ -45,7 +45,7 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
       listingStatus: "Closed"
     }
 
-    await updateJob(job.id, completedJob);
+    await updateJob(job.id, completedJob, token);
     await loadApplications();
     await loadJobs();
     await setApp();
@@ -60,7 +60,7 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
       applicationStatus: "Rejected"
     }
 
-    updateApplication(app.id, rejectedApp).then(res => {
+    updateApplication(app.id, rejectedApp, token).then(res => {
       loadApplications();
       setApp();
       setSelectedApp();
@@ -71,7 +71,7 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
 
   const handleDelete = async () => {
     //api call to delete id
-    deleteApplication(app.id).then(res => {
+    deleteApplication(app.id, token).then(res => {
       loadApplications();
       setApp();
       setSelectedApp();
