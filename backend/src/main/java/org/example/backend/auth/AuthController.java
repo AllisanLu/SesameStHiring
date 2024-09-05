@@ -45,6 +45,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
+        if (!user.getType().equals("ROLE_CANDIDATE") && !user.getType().equals("ROLE_MANAGER")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        if (userService.getUserByUsername(user.getUsername()) != null) {
+            return ResponseEntity.badRequest().build();
+        }
         User createdUser = userService.createUser(user);
         if (createdUser == null) {
             return ResponseEntity.internalServerError().build();
