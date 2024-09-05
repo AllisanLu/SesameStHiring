@@ -29,7 +29,7 @@ import { getUser, getUsers, getCandidates,
 
 function App() {
 
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState();
   const [candidates, setCandidates] = useState([]);
   const [users, setUsers] = useState([]);
   const [managers, setManagers] = useState([]);
@@ -45,12 +45,18 @@ function App() {
   }
 
   const loadPage = async function () {
-    // await loadUser(3);
-    await loadCandidates();
-    await loadUsers();
-    await loadManagers();
-    await loadJobs();
-    await loadApplications();
+    if (currentUser) {
+      if (currentUser.type != "ROLE_CANDIDATE") {
+        await loadCandidates();
+
+        if (currentUser.type != "ROLE_MANAGER") {
+          await loadUsers();
+          await loadManagers();
+        }
+      }
+      await loadJobs();
+      await loadApplications();
+    }
   }
 
   const loadUser = (i) => {
@@ -94,18 +100,18 @@ function App() {
     getApplications().then(res => setApplications(res));
   }
 
-  useEffect(() => {
-    loadPage();
-  }, [])
+  // useEffect(() => {
+  //   loadPage();
+  // }, [])
 
   return (
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<LoginPage loadUser={loadUser}/>} />
+          <Route exact path="/" element={<LoginPage loadUser={loadUser} loadPage={loadPage} />} />
           <Route path="register" element={<RegisterPage setCurrentUser={setCurrentUser} />} />
 
-          {currentUser.type === "ROLE_CANDIDATE" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
+          {currentUser?.type === "ROLE_CANDIDATE" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<CandidateView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} loadApplications={loadApplications} />}></Route>
             <Route path="applications" element={<ApplicationList user={currentUser} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs}/>} ></Route>
@@ -119,7 +125,7 @@ function App() {
             <Route path="applications" element={<ApplicationList user={testAdmin} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs} />} />
           </Route>
 
-          {currentUser.type === "ROLE_MANAGER" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
+          {currentUser?.type === "ROLE_MANAGER" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<ManagerView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} />}></Route>
             <Route path="applications" element={<ApplicationList auser={currentUser} upps={applications} loadApplications={loadApplications} />} ></Route>

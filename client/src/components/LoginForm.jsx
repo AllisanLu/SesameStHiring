@@ -2,15 +2,17 @@ import { useState } from 'react'
 import { login } from '../database'
 import { useNavigate } from 'react-router-dom'
 
-function LoginForm({ loadUser }) {
+function LoginForm({ loadUser, loadPage }) {
   const [userInfo, setUserInfo] = useState({})
   let navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     const user = await login(userInfo);
 
     if (user.id) {
       await loadUser(user.id);
+      await loadPage();
       
       if (user.type === "ROLE_ADMIN") {
         navigate("/admin")

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { register } from '../database.js'
+import { register, createUser } from '../database.js'
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = ({setCurrentUser}) => {
@@ -9,7 +9,7 @@ const RegisterPage = ({setCurrentUser}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await register(newUser);
+        const response = await createUser(newUser);
         setCurrentUser(response);
 
         if (response.type === "ROLE_CANDIDATE") {
