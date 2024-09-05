@@ -7,6 +7,8 @@ import AdminPage from './pages/AdminPage.jsx';
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -53,14 +55,15 @@ function App() {
 
   const loadUser = () => {
     getUser(1).then(user => {
-      if (user.type === "candidate") {
+      console.log(user)
+      if (user.type === "ROLE_CANDIDATE") {
         getCandidate(user.id).then(candidate => {
           if (candidate) {
             setCurrentUser(candidate)
             return
           }
         })
-      } else if (user.type === "manager") {
+      } else if (user.type === "ROLE_MANAGER") {
         getManager(user.id).then(manager => {
           if (manager) {
             setCurrentUser(manager)
@@ -103,10 +106,10 @@ function App() {
           <Route exact path="/" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage setCurrentUser={setCurrentUser} />} />
 
-          {currentUser.type === "candidate" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
+          {currentUser.type === "ROLE_CANDIDATE" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<CandidateView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} loadApplications={loadApplications} />}></Route>
-            <Route path="applications" element={<ApplicationList user={currentUser} apps={applications} loadApplications={loadApplications} />} ></Route>
+            <Route path="applications" element={<ApplicationList user={currentUser} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs}/>} ></Route>
           </Route> : null }
 
           <Route path="admin" element={<AdminPage user={testAdmin} />} >
@@ -114,10 +117,10 @@ function App() {
             <Route path="candidates" element={<CandidateList user={testAdmin} candidates={candidates} loadCandidates={loadCandidates} />} />
             <Route path="joblistings" element={<JobList user={testAdmin} jobs={jobs} loadJobs={loadJobs} />} />
             <Route path="managers" element={<ManagerList managers={managers} loadManagers={loadManagers} />} />
-            <Route path="applications" element={<ApplicationList user={testAdmin} apps={applications} loadApplications={loadApplications} />} />
+            <Route path="applications" element={<ApplicationList user={testAdmin} apps={applications} loadApplications={loadApplications} loadJobs={loadJobs} />} />
           </Route>
 
-          {currentUser.type === "manager" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
+          {currentUser.type === "ROLE_MANAGER" ?<Route path="manager" element={<ManagerPage user={currentUser} setUser={setCurrentUser} />} >
             <Route path="" element={<ManagerView user={currentUser} setUser={setCurrentUser} />}></Route>
             <Route path="joblistings" element={<JobList user={currentUser} jobs={jobs} loadJobs={loadJobs} />}></Route>
             <Route path="applications" element={<ApplicationList auser={currentUser} upps={applications} loadApplications={loadApplications} />} ></Route>
@@ -130,6 +133,7 @@ function App() {
           />
         </Routes>
       </Router>
+      <ToastContainer />
     </>
   )
 }

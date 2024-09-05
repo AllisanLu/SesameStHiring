@@ -6,7 +6,27 @@ function UserList({ users, loadUsers }) {
   const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
-    if (users) setUserList(users)
+    if (users) {
+      const cleanedRoles = users.map((user) => {
+        if (user.type == "ROLE_ADMIN") {
+          return {
+            ...user,
+            type: "admin"
+          }
+        } else if (user.type == "ROLE_MANAGER") {
+          return {
+            ...user,
+            type: "manager"
+          }
+        } else {
+          return {
+            ...user,
+            type: "candidate"
+          }
+        }
+      })
+      setUserList(cleanedRoles)
+    }
   }, [users])
 
   const handleView = (user) => {
@@ -17,10 +37,27 @@ function UserList({ users, loadUsers }) {
     }
   }
 
+  const handleSearch = (e) => {
+    if (e.target.value) {
+      const filteredList = userList?.filter((user) => {
+        return user.username.toLowerCase().includes(e.target.value.toLowerCase()) 
+          || user.type.toLowerCase().includes(e.target.value.toLowerCase());
+      }) ;
+      setUserList(filteredList);
+    } else {
+      setUserList(users);
+    }
+  }
+
   return (
     <>
       <h3>System Users</h3>
       <div>
+        <div>
+          <label htmlFor="search" className="font-23">Search: </label>
+          <input className="search-bar font-23" id="search" name="search" placeholder="Search Username or Role" onChange={(e) => handleSearch(e)}/>
+          <button className="btn btn-success">Add new Admin</button>
+        </div>
         <div className="table-wrapper">
           <table className="table table-striped">
             <thead>
@@ -46,7 +83,6 @@ function UserList({ users, loadUsers }) {
             </tbody>
           </table>
         </div>
-        <button className="btn btn-success">Add new Admin</button>
       </div>
       <User selectedUser={selectedUser} setSelectedUser={setSelectedUser} loadUsers={loadUsers} />
     </>

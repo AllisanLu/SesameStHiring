@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { updateJob, updateApplication, deleteApplication, getCandidate, getJob, getApplicationsByJob } from "../../database";
+import { toast } from "react-toastify";
 
-function Application({ user, selectedApp, setSelectedApp, loadApplications }) {
+function Application({ user, selectedApp, setSelectedApp, loadApplications, loadJobs }) {
   const [app, setApp] = useState(selectedApp);
   const [candidate, setCandidate] = useState();
   const [job, setJob] = useState();
@@ -46,8 +47,11 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications }) {
 
     await updateJob(job.id, completedJob);
     await loadApplications();
+    await loadJobs();
     await setApp();
     await setSelectedApp();
+
+    toast.success("Successfully hired !");
   }
 
   const handleReject = () => {
@@ -61,6 +65,8 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications }) {
       setApp();
       setSelectedApp();
     })
+
+    toast.success("Successfully rejected !");
   }
 
   const handleDelete = async () => {
@@ -95,7 +101,7 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications }) {
                     {user?.id === app.userId ? <button className="btn btn-danger" onClick={handleDelete}>Withdraw</button> : null}
                     {user.type !== "candidate" &&
                       app.applicationStatus === "Pending" ? <>
-                      <button className="btn btn-success" onClick={handleHire}>Hire</button>
+                      <button className="btn btn-warning" onClick={handleHire}>Hire</button>
                       <button className="btn btn-danger" onClick={handleReject}>Reject</button>
                     </> : null
                     }

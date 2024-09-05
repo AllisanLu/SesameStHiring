@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateManager } from "../../database";
+import { toast } from "react-toastify";
 
 function Manager({ selectedManager, setSelectedManager, loadManagers }) {
 
@@ -16,6 +17,8 @@ function Manager({ selectedManager, setSelectedManager, loadManagers }) {
             setManager();
             setSelectedManager();
             loadManagers();
+
+            toast.success("Successfully updated !");
         })
     }
 
@@ -95,7 +98,7 @@ function Manager({ selectedManager, setSelectedManager, loadManagers }) {
                                 />
                             </div>
                             <div className="button-group">
-                                <button className="btn btn-success" type="submit">
+                                <button className="btn btn-warning" type="submit">
                                     Update
                                 </button>
                                 <button className="btn btn-secondary" type="reset">

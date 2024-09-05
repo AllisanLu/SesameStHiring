@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Application from "./Application";
 
-function ApplicationList({ user, apps, loadApplications }) {
+function ApplicationList({ user, apps, loadApplications, loadJobs }) {
 
   const [applications, setApplications] = useState(apps)
   const [selectedApp, setSelectedApp] = useState()
@@ -29,9 +29,25 @@ function ApplicationList({ user, apps, loadApplications }) {
     }
   }
 
+  const handleSearch = (e) => {
+    if (e.target.value) {
+      const filteredList = applications?.filter((application) => {
+        return ("" + application.id).includes(e.target.value) || ("" + application.jobId).includes(e.target.value)
+      }) ;
+      setApplications(filteredList);
+    } else {
+      setApplications(apps);
+    }
+  }
+
+
   return (
     <>
       <h3>Applications</h3>
+      <div>
+        <label htmlFor="search" className="font-23">Search: </label>
+        <input className="search-bar font-23" id="search" name="search" placeholder="Search Application or Job Id" onChange={(e) => handleSearch(e)} />
+      </div>
       <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
@@ -56,7 +72,7 @@ function ApplicationList({ user, apps, loadApplications }) {
           </tbody>
         </table>
       </div>
-      <Application user={user} selectedApp={selectedApp} setSelectedApp={setSelectedApp} loadApplications={loadApplications} />
+      <Application user={user} selectedApp={selectedApp} setSelectedApp={setSelectedApp} loadApplications={loadApplications} loadJobs={loadJobs} />
     </>
   )
 }

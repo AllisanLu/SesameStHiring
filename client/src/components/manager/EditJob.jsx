@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { createJob, updateJob } from "../../database";
+import { toast } from "react-toastify"
+
 
 function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) {
 
@@ -7,7 +9,7 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) 
 
     useEffect(() => {
         if (selectedJob) { 
-            if (!selectedJob.id && user.type === "manager") {
+            if (!selectedJob.id && user.type === "ROLE_MANAGER") {
                 setJob({
                     ...selectedJob,
                     department: user.department,
@@ -39,6 +41,8 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) 
         setSelectedJob();
         setJob();
         loadJobs();
+
+        toast.success("Successfully updated !");
     }
 
     const handleOnChange = (e) => {
@@ -135,7 +139,7 @@ function EditJob({ user, selectedJob, setSelectedJob, loadJobs, handleDelete }) 
                                 </> : null }
 
                                 <div className="button-group">
-                                    <button className="btn btn-success" type="submit">Submit</button>
+                                    <button className="btn btn-warning" type="submit">Submit</button>
                                     {job.id ? <button className="btn btn-danger" onClick={() => handleDelete(job)}>Delete</button> : null }
                                     <button className="btn btn-secondary" type="reset">Cancel</button>
                                 </div>

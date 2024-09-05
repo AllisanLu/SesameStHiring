@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createApplication } from "../../database";
+import { toast } from "react-toastify";
 
 function CreateApplication({ user, job, applying, setApplying, loadApplications }) {
     const [creating, setCreating] = useState(false);
@@ -35,6 +36,8 @@ function CreateApplication({ user, job, applying, setApplying, loadApplications 
         loadApplications();
         setCreating(false);
         setApplying(false);
+
+        toast.success("Successfully applied !");
     }
 
     const handleOnChange = (e) => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createManager, updateUser, updateManager, getManager } from "../../database";
+import { toast } from "react-toastify";
 
 function ManagerView({ user, setUser }) {
     const [manager, setManager] = useState(user)
@@ -17,12 +18,14 @@ function ManagerView({ user, setUser }) {
 
         let res = null;
         if (!check) {
-            await updateUser(user.id, {...user, type: "manager"});
+            await updateUser(user.id, {...user, type: "ROLE_MANAGER"});
             res = await createManager(user.id, manager);
         } else {
             res = await updateManager(user.id, manager);
         }
         setUser(res);
+
+        toast.success("Successfully updated !");
     }
 
     const handleOnChange = (e) => {
@@ -88,8 +91,8 @@ function ManagerView({ user, setUser }) {
                     required
                 />
             </div>
-            <div className="button-group">
-                <button className="btn btn-secondary" type="submit">
+            <div className="">
+                <button className="btn btn-warning" type="submit">
                     {manager?.fullName ? "Update" : "Create"}
                 </button>
             </div>

@@ -21,6 +21,7 @@
         & form {
             padding: 15px;
             text-align: left;
+            color: white;
 
             & button {
                 margin: 5px;

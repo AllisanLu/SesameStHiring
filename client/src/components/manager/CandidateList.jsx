@@ -1,9 +1,14 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Candidate from "./Candidate";
 import EditCandidate from "../admin/editCandidate";
 
 function CandidateList({ user, candidates, loadCandidates }) {
   const [selectedCandidate, setSelectedCandidate] = useState();
+  const [candidateList, setCandidateList] = useState(candidates);
+
+  useEffect(() => {
+    if (candidates) setCandidateList(candidates)
+  }, [candidates])
 
   const handleView = (candidate) => {
     if (candidate.id === selectedCandidate?.id) {
@@ -13,9 +18,25 @@ function CandidateList({ user, candidates, loadCandidates }) {
     }
   }
 
+  const handleSearch = (e) => {
+    if (e.target.value) {
+      const filteredList = candidateList?.filter((candidate) => {
+        return candidate.fullName.toLowerCase().includes(e.target.value.toLowerCase())
+      }) ;
+      setCandidateList(filteredList);
+    } else {
+      setCandidateList(candidates);
+    }
+  }
+
+
   return (
     <>
       <h3>Candidates</h3>
+      <div>
+        <label htmlFor="search" className="font-23">Search: </label>
+        <input className="search-bar font-23" id="search" name="search" placeholder="Search Name" onChange={(e) => handleSearch(e)} />
+      </div>
       <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
@@ -28,7 +49,7 @@ function CandidateList({ user, candidates, loadCandidates }) {
             </tr>
           </thead>
           <tbody className="table-horizontal">
-            {candidates?.map((candidate) => {
+            {candidateList?.map((candidate) => {
               return (
                 <tr key={candidate.id} onClick={() => handleView(candidate)}>
                   <td>{candidate?.fullName}</td>
@@ -43,7 +64,7 @@ function CandidateList({ user, candidates, loadCandidates }) {
           </tbody>
         </table>
       </div>
-      {user.type === "admin" ?
+      {user.type === "ROLE_ADMIN" ?
         <EditCandidate loadCandidates={loadCandidates} selectedCandidate={selectedCandidate} setSelectedCandidate={setSelectedCandidate} />
         : <Candidate  loadCandidates={loadCandidates} selectedCandidate={selectedCandidate} setSelectedCandidate={setSelectedCandidate} />
       }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateUser } from "../../database";
+import { toast } from "react-toastify";
 import "../Modal.css"
 
 function User({ selectedUser, setSelectedUser, loadUsers }) {
@@ -17,6 +18,7 @@ function User({ selectedUser, setSelectedUser, loadUsers }) {
             setUser();
             setSelectedUser();
             loadUsers();
+            toast.success("Successfully updated !");
         })
     }
 
@@ -70,7 +72,7 @@ function User({ selectedUser, setSelectedUser, loadUsers }) {
                             />
                         </div>
                         <div className="button-group">
-                            <button className="btn btn-success" type="submit">
+                            <button className="btn btn-warning" type="submit">
                                 Update
                             </button>
                             <button className="btn btn-secondary" type="reset">

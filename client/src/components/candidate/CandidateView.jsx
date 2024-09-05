@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createCandidate, updateUser, updateCandidate, getCandidate } from "../../database";
+import { toast } from "react-toastify";
 
 function CandidateView({ user, setUser }) {
     const [candidate, setCandidate] = useState(user);
@@ -17,12 +18,14 @@ function CandidateView({ user, setUser }) {
 
         let res = null;
         if (!check) {
-            await updateUser(user.id, {...user, type: "candidate"});
+            await updateUser(user.id, {...user, type: "ROLE_CANDIDATE"});
             res = await createCandidate(user.id, candidate);
         } else {
             res = await updateCandidate(user.id, candidate);
         }
         setUser(res);
+
+        toast.success("Successfully updated !");
     }
 
     const handleOnChange = (e) => {
@@ -98,11 +101,12 @@ function CandidateView({ user, setUser }) {
                     placeholder="Enter resume details"
                     className="form-control"
                     onChange={handleOnChange}
+                    rows="6"
                     required
                 />
             </div>
-            <div className="button-group">
-                <button className="btn btn-secondary" type="submit">
+            <div className="">
+                <button className="btn btn-warning" type="submit">
                     {candidate?.fullName ? "Update" : "Create"}   
                 </button>
             </div>

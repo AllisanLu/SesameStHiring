@@ -14,18 +14,24 @@ function JobList({ user, jobs, loadJobs, loadApplications }) {
 
   // add a fetch to get the manager's list of jobs
   useEffect(() => {
-    if (user?.type === "manager") {
-      getManagerJobs(user.id).then(res => setViewableJobs(res))
+    filterJobs(jobs).then (res => {
+      setViewableJobs(res)
+    })
+  }, [jobs])
+
+  const filterJobs = async (jobs) => {
+    if (user?.type === "ROLE_MANAGER") {
+      return await getManagerJobs(user.id);
     }
-    if (jobs) { 
-      if (user?.type === "candidate") {
+    if (jobs) {
+      if (user?.type === "ROLE_CANDIDATE") {
         const pendingJobs = jobs.filter((job) => job.listingStatus === "Pending")
-        setViewableJobs(pendingJobs)
+        return pendingJobs
       } else {
-        setViewableJobs(jobs);
+        return jobs
       }
     }
-  }, [jobs])
+  }
 
   const handleSelect = (job) => {
     if (selectedJob?.id === job.id) {
@@ -35,15 +41,15 @@ function JobList({ user, jobs, loadJobs, loadApplications }) {
     }
   }
 
-  const handleDelete = (job) => {
+  const handleDelete = async (job) => {
     const id = job.id;
-    deleteJob(id);
-    setSelectedJob();
-    loadJobs();
+    await deleteJob(id);
+    await setSelectedJob();
+    await loadJobs();
   }
 
   const handleApply = (e) => {
-   setApplying(true);
+    setApplying(true);
   }
 
   const showCreateNewJob = (e) => {
@@ -56,11 +62,26 @@ function JobList({ user, jobs, loadJobs, loadApplications }) {
     }
   }
 
+  const handleSearch = (e) => {
+    if (e.target.value) {
+      const filteredList = viewableJobs?.filter((job) => {
+        return job.jobTitle.toLowerCase().includes(e.target.value.toLowerCase())
+      });
+      setViewableJobs(filteredList);
+    } else {
+      filterJobs(jobs).then(res => setViewableJobs(res))
+    }
+  }
+
   return (
     <>
       <h3>Listed Jobs</h3>
       <div>
-        {user.type != "candidate" ? <button className="btn btn-success" onClick={showCreateNewJob}>Create Job Listing</button> : null}
+        <div>
+          <label htmlFor="search" className="font-23">Search: </label>
+          <input className="search-bar font-23" id="search" name="search" placeholder="Search Title or Department" onChange={(e) => handleSearch(e)} />
+          {user.type != "ROLE_CANDIDATE" ? <button className="btn btn-success" onClick={showCreateNewJob}>Create Job Listing</button> : null}
+        </div>
         <div className="table-wrapper">
           <table className="table table-striped">
             <thead>
@@ -93,9 +114,9 @@ function JobList({ user, jobs, loadJobs, loadApplications }) {
           </table>
         </div>
       </div>
-      {user.type != "candidate" ? <EditJob user={user} selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleDelete={handleDelete} loadJobs={loadJobs} />
+      {user.type != "ROLE_CANDIDATE" ? <EditJob user={user} selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleDelete={handleDelete} loadJobs={loadJobs} />
         : <Job selectedJob={selectedJob} setSelectedJob={setSelectedJob} handleApply={handleApply} />}
-      {user.type === "candidate" ? <CreateApplication user={user} job={selectedJob} applying={applying} setApplying={setApplying} loadApplications={loadApplications} />
+      {user.type === "ROLE_CANDIDATE" ? <CreateApplication user={user} job={selectedJob} applying={applying} setApplying={setApplying} loadApplications={loadApplications} />
         : null}
     </>
   )

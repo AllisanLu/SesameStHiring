@@ -130,7 +130,7 @@ async function updateJob(id, job) {
 async function deleteJob(id) {
     return fetch(`http://localhost:8080/api/jobs/${id}`, {
         method: "DELETE"
-    }).then(res => res.json());
+    });
 }
 
 async function getApplications() {

@@ -13,10 +13,10 @@
   font-weight: bold;
 }
 
-.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>td,
 .table-striped>tbody>tr:nth-child(odd)>th {
-   background-color: #05b84925
- }
+  background-color: #05b84925
+}
 
 .table-horizontal {
   width: 100%;
@@ -44,4 +44,25 @@ table thead tr th {
   position: sticky;
   z-index: 100;
   top: 0;
+}
+
+.button-group {
+  display: flex;
+  float: right;
+  margin: 10px;
+}
+
+.btn {
+  font-size: 20px;
+}
+
+.search-bar {
+  margin: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  min-width: 20%;
+}
+
+.font-23 {
+  font-size: 23px;
 }

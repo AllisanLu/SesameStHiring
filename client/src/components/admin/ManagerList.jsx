@@ -6,7 +6,7 @@ function ManagerList({ managers, loadManagers }) {
   const [selectedManager, setSelectedManager] = useState();
 
   useEffect(() => {
-    if (managers) setManagerList(managers) 
+    if (managers) setManagerList(managers)
   }, [managers])
 
   const handleView = (manager) => {
@@ -17,9 +17,25 @@ function ManagerList({ managers, loadManagers }) {
     }
   }
 
+  const handleSearch = (e) => {
+    if (e.target.value) {
+      const filteredList = managerList?.filter((manager) => {
+        return manager.fullName.toLowerCase().includes(e.target.value.toLowerCase()) 
+          || manager.department.toLowerCase().includes(e.target.value.toLowerCase());
+      }) ;
+      setManagerList(filteredList);
+    } else {
+      setManagerList(managers);
+    }
+  }
+
   return (
     <>
       <h3>Managers</h3>
+      <div>
+        <label htmlFor="search" className="font-23">Search: </label>
+        <input className="search-bar font-23" id="search" name="search" placeholder="Search Name or Department" onChange={(e) => handleSearch(e)} />
+      </div>
       <div className="table-wrapper">
         <table className="table table-striped">
           <thead>
@@ -45,7 +61,7 @@ function ManagerList({ managers, loadManagers }) {
           </tbody>
         </table>
       </div>
-      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager} loadManagers={loadManagers}/>
+      <Manager selectedManager={selectedManager} setSelectedManager={setSelectedManager} loadManagers={loadManagers} />
     </>
   )
 }

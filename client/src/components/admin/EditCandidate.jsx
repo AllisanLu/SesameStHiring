@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { updateCandidate } from "../../database";
+import { toast } from "react-toastify";
 
 
 const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate }) => {
@@ -15,6 +16,8 @@ const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate
         await updateCandidate(candidate.id, candidate)
         await loadCandidates();
         setSelectedCandidate();
+
+        toast.success("Successfully updated !");
     }
 
     const resetState = () => {
@@ -108,7 +111,7 @@ const EditCandidate = ({ loadCandidates, selectedCandidate, setSelectedCandidate
                                 />
                             </div>
                             <div className="button-group">
-                                <button className="btn btn-success" type="submit">
+                                <button className="btn btn-warning" type="submit">
                                     Update
                                 </button>
                                 <button className="btn btn-secondary" type="reset">

@@ -12,9 +12,9 @@ const RegisterPage = ({setCurrentUser}) => {
         const response = await createUser(newUser);
         setCurrentUser(response);
 
-        if (response.type === "candidate") {
+        if (response.type === "ROLE_CANDIDATE") {
             navigate("/candidate");
-        } else if (response.type === "manager") {
+        } else if (response.type === "ROLE_MANAGER") {
             navigate("/manager");
         }
 
@@ -28,7 +28,7 @@ const RegisterPage = ({setCurrentUser}) => {
     const handleCancel = (e) => {
         e.preventDefault();
         resetState();
-        // go back to login page
+        navigate("/");
     };
 
     const handleOnChange = (e) => {
@@ -70,21 +70,21 @@ const RegisterPage = ({setCurrentUser}) => {
                             required
                         />
                     </div>
+                    <h4>Select Role</h4>
                     <div className="form-check">
-                        <h4>Select Role</h4>
-                        <input className="form-check-input" type="radio" name="type" value="candidate" id="flexRadioDefault1" onChange={handleOnChange}/>
+                        <input className="form-check-input" type="radio" name="type" value="ROLE_CANDIDATE" id="flexRadioDefault1" onChange={handleOnChange}/>
                             <label className="form-check-label" htmlFor="flexRadioDefault1">
                                 Candidate
                             </label>
                     </div>
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="type" value="manager" onChange={handleOnChange} id="flexRadioDefault2" />
+                        <input className="form-check-input" type="radio" name="type" value="ROLE_MANAGER" onChange={handleOnChange} id="flexRadioDefault2" />
                             <label className="form-check-label" htmlFor="flexRadioDefault2">
                                 Manager
                             </label>
                     </div>
                     <div className="button-group">
-                        <button className="btn btn-success" type="submit">
+                        <button className="btn btn-warning" type="submit">
                             Create
                         </button>
                         <button className="btn btn-secondary" type="reset">
