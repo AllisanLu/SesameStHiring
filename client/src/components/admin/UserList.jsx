@@ -26,6 +26,7 @@ function UserList({ users, loadUsers }) {
         }
       })
       setUserList(cleanedRoles)
+      // setUserList(users)
     }
   }, [users])
 
@@ -35,6 +36,10 @@ function UserList({ users, loadUsers }) {
     } else {
       setSelectedUser(user);
     }
+  }
+
+  const handleCreate = () => {
+    setSelectedUser({});
   }
 
   const handleSearch = (e) => {
@@ -56,7 +61,7 @@ function UserList({ users, loadUsers }) {
         <div>
           <label htmlFor="search" className="font-23">Search: </label>
           <input className="search-bar font-23" id="search" name="search" placeholder="Search Username or Role" onChange={(e) => handleSearch(e)}/>
-          <button className="btn btn-success">Add new Admin</button>
+          <button className="btn btn-success" onClick={handleCreate}>Add new Admin</button>
         </div>
         <div className="table-wrapper">
           <table className="table table-striped">

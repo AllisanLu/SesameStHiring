@@ -45,7 +45,7 @@ function App() {
   }
 
   const loadPage = async function () {
-    await loadUser();
+    // await loadUser(3);
     await loadCandidates();
     await loadUsers();
     await loadManagers();
@@ -53,9 +53,8 @@ function App() {
     await loadApplications();
   }
 
-  const loadUser = () => {
-    getUser(2).then(user => {
-      console.log(user)
+  const loadUser = (i) => {
+    getUser(i).then(user => {
       if (user.type === "ROLE_CANDIDATE") {
         getCandidate(user.id).then(candidate => {
           if (candidate) {
@@ -103,7 +102,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<LoginPage />} />
+          <Route exact path="/" element={<LoginPage loadUser={loadUser}/>} />
           <Route path="register" element={<RegisterPage setCurrentUser={setCurrentUser} />} />
 
           {currentUser.type === "ROLE_CANDIDATE" ? <Route path="candidate" element={<CandidatePage user={currentUser} setUser={setCurrentUser} />} >

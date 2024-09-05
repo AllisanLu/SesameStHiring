@@ -99,7 +99,7 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
 
                   <div className="button-group">
                     {user?.id === app.userId ? <button className="btn btn-danger" onClick={handleDelete}>Withdraw</button> : null}
-                    {user.type !== "candidate" &&
+                    {user.type !== "ROLE_CANDIDATE" &&
                       app.applicationStatus === "Pending" ? <>
                       <button className="btn btn-warning" onClick={handleHire}>Hire</button>
                       <button className="btn btn-danger" onClick={handleReject}>Reject</button>

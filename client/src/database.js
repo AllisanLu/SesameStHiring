@@ -1,19 +1,65 @@
 // for doing API calls :D
+let token = ""
+
+// LOGIN
+
+async function login(userInfo) {
+    const user = await fetch("http://localhost:8080/api/login", {
+        headers: { "Authorization" : btoa(`${userInfo.username}:${userInfo.password}`) },
+        method: "POST",
+    })
+    .then(response => {
+        if (response.ok) {
+            //get token from header
+            token = response.headers.get('Authorization');
+            return response.json();
+        } else {
+            return response.error
+        }
+    })
+
+    return user
+}
+
+async function register(userInfo) {
+    const user = await fetch("http://localhost:8080/api/register", {
+        headers: { "Content-Type": "application/json", "Authorization": token },
+        method: "POST",
+        body: JSON.stringify(userInfo)
+    })
+    .then(response => {
+        if (response.ok) {
+            //get token from header
+            token = response.headers.get('Authorization');
+            return response.json();
+        } else {
+            return response.error
+        }
+    })
+
+    return user
+}
+
+// USERS
 
 async function getUsers() {
-    const newUsers = await fetch("http://localhost:8080/api/users")
+    const newUsers = await fetch("http://localhost:8080/api/users", {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
     return newUsers;
 }
 
 async function getUser(id) {
-    return fetch(`http://localhost:8080/api/users/${id}`)
+    return fetch(`http://localhost:8080/api/users/${id}`, {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function updateUser(id, user) {
     fetch(`http://localhost:8080/api/users/${id}`, {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": token },
         method: "PUT",
         body: JSON.stringify(user)
     })
@@ -22,7 +68,7 @@ async function updateUser(id, user) {
 
 async function createUser(user) {
     return fetch("http://localhost:8080/api/users", {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": token },
         method: "POST",
         body: JSON.stringify(user)
     })
@@ -30,13 +76,19 @@ async function createUser(user) {
 
 }
 
+// CANDIDATES
+
 async function getCandidates() {
-    return fetch("http://localhost:8080/api/candidates")
+    return fetch("http://localhost:8080/api/candidates", {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function getCandidate(id) {
-    return fetch(`http://localhost:8080/api/candidates/${id}`)
+    return fetch(`http://localhost:8080/api/candidates/${id}`, {
+        headers: { "Authorization": token }
+    })
     .then(response => { 
         if (response.ok)
             return response.json()
@@ -46,7 +98,7 @@ async function getCandidate(id) {
 
 async function createCandidate(id, candidate) {
     return fetch("http://localhost:8080/api/candidates", {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token },
         method: "POST",
         body: JSON.stringify({...candidate, id})
     }).then(res => res.json());
@@ -54,7 +106,7 @@ async function createCandidate(id, candidate) {
 
 async function updateCandidate(id, candidate) {
     return fetch(`http://localhost:8080/api/candidates/${id}`, {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "PUT",
         body: JSON.stringify({...candidate, id})
     }).then(res => res.json());
@@ -62,17 +114,24 @@ async function updateCandidate(id, candidate) {
 
 async function deleteCandidate(id) {
     return fetch(`http://localhost:8080/api/candidates/${id}`, {
+        headers: { "Authorization": token },
         method: "DELETE"
     }).then(res => res.json());
 }
 
+// MANAGERS
+
 async function getManagers() {
-    return fetch("http://localhost:8080/api/managers")
+    return fetch("http://localhost:8080/api/managers", {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function getManager(id) {
-    return fetch(`http://localhost:8080/api/managers/${id}`)
+    return fetch(`http://localhost:8080/api/managers/${id}`, {
+        header: { "Authorization": token }
+    })
     .then(response => { 
         if (response.ok)
             return response.json()
@@ -82,7 +141,7 @@ async function getManager(id) {
 
 async function createManager(id, manager) {
     return fetch("http://localhost:8080/api/managers", {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "POST",
         body: JSON.stringify({...manager, id})
     }).then(res => res.json());
@@ -90,32 +149,40 @@ async function createManager(id, manager) {
 
 async function updateManager(id, manager) {
     return fetch(`http://localhost:8080/api/managers/${id}`, {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "PUT",
         body: JSON.stringify({...manager, id})
     }).then(res => res.json());
 }
 
+// JOBS
+
 async function getJobs() {
-    return fetch("http://localhost:8080/api/jobs")
+    return fetch("http://localhost:8080/api/jobs", {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function getJob(id) {
-    return fetch(`http://localhost:8080/api/jobs/${id}`)
+    return fetch(`http://localhost:8080/api/jobs/${id}`, {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
 async function createJob(job) {
     return fetch("http://localhost:8080/api/jobs", {
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json", "Authorization": token},
         method: "POST",
         body: JSON.stringify(job)
     }).then(res => res.json());
 }
 
 async function getManagerJobs(managerid) {
-    return fetch(`http://localhost:8080/api/jobs/manager/${managerid}`)
+    return fetch(`http://localhost:8080/api/jobs/manager/${managerid}`, {
+        headers: { "Authorization": token }
+    })
     .then(response => response.json())
 }
 
@@ -132,6 +199,8 @@ async function deleteJob(id) {
         method: "DELETE"
     });
 }
+
+// APPLICATIONS
 
 async function getApplications() {
     return fetch("http://localhost:8080/api/applications")
@@ -166,6 +235,8 @@ async function deleteApplication(id) {
 }
 
 export {
+    login,
+    register,
     getUsers,
     getUser,
     createUser,
