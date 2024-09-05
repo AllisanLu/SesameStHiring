@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { login } from '../database'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 function LoginForm({ loadUser, loadPage }) {
   const [userInfo, setUserInfo] = useState({})
@@ -21,6 +22,7 @@ function LoginForm({ loadUser, loadPage }) {
       } else {
         navigate("/candidate")
       }
+      toast.success("Successfully logged in !");
     }
   }
 

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { register, createUser } from '../database.js'
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegisterPage = ({setCurrentUser}) => {
     const [newUser, setNewUser] = useState({});
@@ -12,13 +13,16 @@ const RegisterPage = ({setCurrentUser}) => {
         const response = await createUser(newUser);
         setCurrentUser(response);
 
-        if (response.type === "ROLE_CANDIDATE") {
-            navigate("/candidate");
-        } else if (response.type === "ROLE_MANAGER") {
-            navigate("/manager");
-        }
+        navigate("/");
+
+        // if (response.type === "ROLE_CANDIDATE") {
+        //     navigate("/candidate");
+        // } else if (response.type === "ROLE_MANAGER") {
+        //     navigate("/manager");
+        // }
 
         setNewUser({ username: "", password: "" });
+        toast.success("Successfully created !");
     }
 
     const resetState = () => {
