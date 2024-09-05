@@ -54,7 +54,7 @@ function Job({ selectedJob, setSelectedJob, handleApply }) {
                   </> : null}
 
                   <div className="button-group">
-                    <button className="btn btn-success" onClick={handleApply}>Apply</button>
+                    <button className="btn btn-warning" onClick={handleApply}>Apply</button>
                     <button className="btn btn-secondary" onClick={handleCancel}>Close</button>
                   </div>
                 </div>

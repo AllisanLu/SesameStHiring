@@ -91,7 +91,7 @@ function Application({ user, selectedApp, setSelectedApp, loadApplications, load
                   <h4>Resume</h4>
                   <p>{app.resume}</p>
                   <h4>Cover Letter</h4>
-                  <p>{app.coverLetter}</p>
+                  {app.coverLetter ? <p>{app.coverLetter}</p> : <p>None</p>}
                   <h4>Status</h4>
                   <p>{app.applicationStatus}</p>
                   <h4>Date Applied</h4>

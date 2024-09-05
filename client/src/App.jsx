@@ -54,7 +54,7 @@ function App() {
   }
 
   const loadUser = () => {
-    getUser(1).then(user => {
+    getUser(2).then(user => {
       console.log(user)
       if (user.type === "ROLE_CANDIDATE") {
         getCandidate(user.id).then(candidate => {
