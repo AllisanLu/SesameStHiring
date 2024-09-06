@@ -22,7 +22,7 @@ function CandidatePage({ user, setUser, token }) {
         <CandidateNavigation></CandidateNavigation>
         <h1>Welcome Candidate {user?.username}!</h1>
         {user.fullName ? (<Outlet />) : <CandidateView user={user} setUser={setUser} token={token}/>}
-        <img id="welcomeImg" src="https://wallpapers.com/images/hd/cute-cartoon-sesame-street-characters-1841n41pmobi9iqy.jpg" alt="characters" />
+        <img id="welcomeImg" src="https://cartoon-clipart.co/amp/images/march1710.gif" alt="characters" />
       </div>
       <Footer></Footer>
     </>
