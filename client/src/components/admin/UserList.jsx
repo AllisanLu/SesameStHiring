@@ -6,6 +6,7 @@ function UserList({ users, loadUsers, token }) {
   const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
+    console.log(users)
     setUsersClean(users);
   }, [users])
 

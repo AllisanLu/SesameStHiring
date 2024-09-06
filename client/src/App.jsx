@@ -58,17 +58,18 @@ function App() {
         getCandidate(user.id, authToken).then(candidate => {
           if (candidate) {
             setCurrentUser(candidate)
+            return
           }
         })
       } else if (user.type === "ROLE_MANAGER") {
         getManager(user.id, authToken).then(manager => {
           if (manager) {
             setCurrentUser(manager)
+            return
           }
         })
-      } else {
-        setCurrentUser(user)
-      }
+      } 
+      setCurrentUser(user)
     })
   }
 
