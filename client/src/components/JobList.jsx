@@ -65,7 +65,8 @@ function JobList({ user, jobs, loadJobs, loadApplications, token }) {
   const handleSearch = (e) => {
     if (e.target.value) {
       const filteredList = viewableJobs?.filter((job) => {
-        return job.jobTitle.toLowerCase().includes(e.target.value.toLowerCase())
+        return job.jobTitle.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        job.department.toLowerCase().includes(e.target.value.toLowerCase())
       });
       setViewableJobs(filteredList);
     } else {
